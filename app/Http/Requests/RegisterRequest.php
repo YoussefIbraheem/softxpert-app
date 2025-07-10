@@ -28,6 +28,23 @@ class RegisterRequest extends FormRequest
             'password' => [
                 'string',
                 'required',
+                'confirmed',
+                function () {
+                    if (config('services.settings.app_environment') != 'local') {
+                        return Password::min(8)
+                            ->mixedCase()
+                            ->letters()
+                            ->numbers()
+                            ->symbols();
+                    }
+
+                    return Password::min(6);
+                },
+
+            ],
+            'password_confirmation' => [
+                'string',
+                'required',
                 function () {
                     if (config('services.settings.app_environment') != 'local') {
                         return Password::min(8)

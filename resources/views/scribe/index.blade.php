@@ -130,7 +130,8 @@ You can switch the language used with the tabs at the top right (or from the nav
     --data "{
     \"name\": \"architecto\",
     \"email\": \"zbailey@example.net\",
-    \"password\": \"|]|{+-\"
+    \"password\": \"|]|{+-\",
+    \"password_confirmation\": \"architecto\"
 }"
 </code></pre></div>
 
@@ -148,7 +149,8 @@ const headers = {
 let body = {
     "name": "architecto",
     "email": "zbailey@example.net",
-    "password": "|]|{+-"
+    "password": "|]|{+-",
+    "password_confirmation": "architecto"
 };
 
 fetch(url, {
@@ -166,9 +168,10 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 40,
-    &quot;name&quot;: &quot;Mrs. Justina Gaylord&quot;,
-    &quot;email&quot;: &quot;lafayette.considine@example.com&quot;
+    &quot;id&quot;: 51,
+    &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
+    &quot;email&quot;: &quot;gulgowski.asia@example.com&quot;,
+    &quot;role&quot;: null
 }</code>
  </pre>
     </span>
@@ -275,6 +278,17 @@ You can check the Dev Tools console for debugging information.</code></pre>
     <br>
 <p>Example: <code>|]|{+-</code></p>
         </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>password_confirmation</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="password_confirmation"                data-endpoint="POSTapi-register"
+               value="architecto"
+               data-component="body">
+    <br>
+<p>Example: <code>architecto</code></p>
+        </div>
         </form>
 
                     <h2 id="user-auth-POSTapi-login">Login User</h2>
@@ -331,9 +345,10 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;id&quot;: 41,
+        &quot;id&quot;: 52,
         &quot;name&quot;: &quot;Mrs. Justina Gaylord&quot;,
-        &quot;email&quot;: &quot;cormier.nick@example.com&quot;
+        &quot;email&quot;: &quot;lafayette.considine@example.com&quot;,
+        &quot;role&quot;: null
     },
     &quot;token&quot;: &quot;5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc&quot;
 }</code>

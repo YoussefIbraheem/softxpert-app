@@ -52,15 +52,26 @@ endpoints:
         exampleWasSpecified: false
         nullable: false
         custom: []
+      password_confirmation:
+        name: password_confirmation
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
     cleanBodyParameters:
       name: architecto
       email: zbailey@example.net
       password: '|]|{+-'
+      password_confirmation: architecto
     fileParameters: []
     responses:
       -
         status: 200
-        content: '{"id":40,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com"}'
+        content: '{"id":51,"name":"Ms. Elisabeth Okuneva","email":"gulgowski.asia@example.com","role":null}'
         headers: []
         description: ''
         custom: []
@@ -118,7 +129,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":{"id":41,"name":"Mrs. Justina Gaylord","email":"cormier.nick@example.com"},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
+        content: '{"data":{"id":52,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com","role":null},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
         headers: []
         description: ''
         custom: []
