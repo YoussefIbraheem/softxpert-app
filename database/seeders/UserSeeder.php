@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 
@@ -25,7 +26,7 @@ class UserSeeder extends Seeder
                 'email' => 'admin@test.com',
             ]);
 
-            $admin->assignRole('admin');
+            $admin->assignRole(UserRole::ADMIN);
         }
 
         $manager = User::where('email', 'manager@test.com')->first();
@@ -40,13 +41,13 @@ class UserSeeder extends Seeder
                 'email' => 'manager@test.com',
             ]);
 
-            $manager->assignRole('manager');
+            $manager->assignRole(UserRole::MANAGER);
         }
 
         $users = User::factory()->count(10)->create();
 
         $users->each(function (User $user) {
-            $user->assignRole('user');
+            $user->assignRole(UserRole::USER);
         });
 
         $this->command->info('Admin: '.$admin->email.' with password: password');

@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'settings' => [
+        'app_environment' => env('APP_ENV'),
+    ]
+
+
+
 ];
