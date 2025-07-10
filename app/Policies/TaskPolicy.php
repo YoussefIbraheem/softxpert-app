@@ -12,7 +12,7 @@ class TaskPolicy
      */
     public function viewAny(User $user): bool
     {
-        return true;
+        return $user->hasAnyRole(['admin', 'manager']);
     }
 
     /**
@@ -20,7 +20,9 @@ class TaskPolicy
      */
     public function view(User $user, Task $task): bool
     {
-        return true;
+        return $user->hasAnyRole(['admin', 'manager']) ||
+        $task->assignees->contains($user);
+
     }
 
     /**
@@ -28,7 +30,7 @@ class TaskPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasRole('manager');
+        return $user->hasAnyRole(['admin', 'manager']);
     }
 
     /**
@@ -36,7 +38,16 @@ class TaskPolicy
      */
     public function update(User $user, Task $task): bool
     {
-        return $user->id === $task->owner_id || $user->hasRole('manager');
+        if ($user->hasAnyRole(['admin', 'manager'])) {
+            return true;
+        }
+
+        if ($task->assignees->contains($user)) {
+            return request()->only('status') && count(request()->all()) === 1;
+        }
+
+        return false;
+
     }
 
     /**
@@ -44,7 +55,7 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task): bool
     {
-        return $user->id === $task->owner_id || $user->hasRole('manager');
+        return $user->id === $task->owner_id || $user->hasAnyRole(['admin', 'manager']);
     }
 
     /**
@@ -52,7 +63,7 @@ class TaskPolicy
      */
     public function restore(User $user, Task $task): bool
     {
-        return $user->id === $task->owner_id || $user->hasRole('manager');
+        return $user->id === $task->owner_id || $user->hasAnyRole(['admin', 'manager']);
     }
 
     /**
@@ -60,6 +71,6 @@ class TaskPolicy
      */
     public function forceDelete(User $user, Task $task): bool
     {
-        return $user->id === $task->owner_id || $user->hasRole('manager');
+        return $user->id === $task->owner_id || $user->hasAnyRole(['admin', 'manager']);
     }
 }
