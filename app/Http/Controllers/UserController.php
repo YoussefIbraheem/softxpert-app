@@ -26,7 +26,6 @@ class UserController extends Controller
     #[ResponseFromApiResource(UserResource::class, User::class)]
     public function register(RegisterRequest $request)
     {
-        $request = $request->validated();
 
         $user = User::create([
             'name' => $request['name'],
@@ -50,8 +49,6 @@ class UserController extends Controller
     #[ResponseFromApiResource(UserResource::class, User::class, additional: ['token' => '5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc'])]
     public function login(LoginRequest $request)
     {
-
-        $request = $request->validated();
 
         $user = User::where('email', $request['email'])->first();
         if (! $user || ! Hash::check($request['password'], $user->password)) {

@@ -3,7 +3,6 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
 
 class RegisterRequest extends FormRequest
 {
@@ -23,42 +22,18 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['string', 'required'],
-            'email' => ['string', 'required', 'email', 'unique:users,email'],
-            'password' => [
-                'string',
-                'required',
-                'confirmed',
-                function () {
-                    if (config('services.settings.app_environment') != 'local') {
-                        return Password::min(8)
-                            ->mixedCase()
-                            ->letters()
-                            ->numbers()
-                            ->symbols();
-                    }
+            'name' => 'string|required',
+            'email' => 'string|required|email|unique:users,email',
+            'password' => 'required|string|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&^_-])[A-Za-z\d@$!%*#?&^_-]{8,}$/',
+            'password_confirmation' => 'required|string',
 
-                    return Password::min(6);
-                },
+        ];
+    }
 
-            ],
-            'password_confirmation' => [
-                'string',
-                'required',
-                function () {
-                    if (config('services.settings.app_environment') != 'local') {
-                        return Password::min(8)
-                            ->mixedCase()
-                            ->letters()
-                            ->numbers()
-                            ->symbols();
-                    }
-
-                    return Password::min(6);
-                },
-
-            ],
-
+    public function messages(): array
+    {
+        return [
+            'password.regex' => 'Password must be a minimum of 8 chars and contains at least 1 uppercase and lowercase and special symobl',
         ];
     }
 }
