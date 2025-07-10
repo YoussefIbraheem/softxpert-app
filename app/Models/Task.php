@@ -33,6 +33,6 @@ class Task extends Model
 
     public function assignees(): BelongsToMany
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withTimestamps();
     }
 }

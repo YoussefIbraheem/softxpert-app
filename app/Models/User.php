@@ -51,7 +51,7 @@ class User extends Authenticatable
 
     public function assignedTasks(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class);
+        return $this->belongsToMany(Task::class)->withTimestamps();
     }
 
     public function created_tasks(): HasMany
