@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
@@ -17,16 +16,17 @@ class RoleSeeder extends Seeder
         $roles = [
             'admin',
             'manager',
-            'user' ];
+            'user'];
 
-            foreach ($roles as $role) {
-                $role_exists = \Spatie\Permission\Models\Role::where('name', $role)->exists();
-                if ($role_exists) {
-                    $this->command->warn("Role '$role' already exists, skipping creation.");
-                    continue;
-                }
-                \Spatie\Permission\Models\Role::firstOrCreate(['name' => $role]);
+        foreach ($roles as $role) {
+            $role_exists = \Spatie\Permission\Models\Role::where('name', $role)->exists();
+            if ($role_exists) {
+                $this->command->warn("Role '$role' already exists, skipping creation.");
+
+                continue;
             }
+            \Spatie\Permission\Models\Role::firstOrCreate(['name' => $role]);
+        }
 
         $this->command->info('Roles seeded successfully!');
     }

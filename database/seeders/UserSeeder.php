@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class UserSeeder extends Seeder
 {
@@ -18,18 +17,16 @@ class UserSeeder extends Seeder
         $admin = User::where('email', 'admin@test.com')->first();
 
         if ($admin !== null) {
-            $this->command->warn("Admin user already exists, skipping creation.");
+            $this->command->warn('Admin user already exists, skipping creation.');
 
         } else {
             $admin = User::factory()->create([
-            "name" => "admin",
-            "email"=> "admin@test.com",
-        ]);
+                'name' => 'admin',
+                'email' => 'admin@test.com',
+            ]);
 
-            $admin->assignRole("admin");
+            $admin->assignRole('admin');
         }
-
-
 
         $manager = User::where('email', 'manager@test.com')->first();
 
@@ -38,23 +35,23 @@ class UserSeeder extends Seeder
 
         } else {
 
-        $manager = User::factory()->create([
-            "name"=> "test manager",
-            "email"=> "manager@test.com",
+            $manager = User::factory()->create([
+                'name' => 'test manager',
+                'email' => 'manager@test.com',
             ]);
 
-        $manager->assignRole("manager");
+            $manager->assignRole('manager');
         }
 
         $users = User::factory()->count(10)->create();
 
         $users->each(function (User $user) {
-            $user->assignRole("user");
+            $user->assignRole('user');
         });
 
-        $this->command->info('Admin: ' . $admin->email . ' with password: password');
-        $this->command->info('Manager: ' . $manager->email . ' with password: password');
-        $this->command->info('Users: ' . $users->pluck('email')->implode(', ') . ' with password: password');
+        $this->command->info('Admin: '.$admin->email.' with password: password');
+        $this->command->info('Manager: '.$manager->email.' with password: password');
+        $this->command->info('Users: '.$users->pluck('email')->implode(', ').' with password: password');
         $this->command->info('Users created successfully!');
     }
 }
