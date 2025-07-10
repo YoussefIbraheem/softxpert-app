@@ -37,7 +37,7 @@ class TaskSeeder extends Seeder
         ]);
 
         foreach ($tasks as $task) {
-            $task->users()->attach($users->pluck('id')->random(rand(1, 3)));
+            $task->assignees()->attach($users->pluck('id')->random(rand(1, 3)));
         }
         $this->command->info('Tasks seeded successfully!');
         $this->command->info('Manager and users created if they did not exist.');
