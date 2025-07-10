@@ -23,23 +23,24 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            "name" => ["string", "required"],
-            "email" => ["string", "required", "email", "unique:users,email"],
-            "password" => [
-                "string",
-                "required",
+            'name' => ['string', 'required'],
+            'email' => ['string', 'required', 'email', 'unique:users,email'],
+            'password' => [
+                'string',
+                'required',
                 function () {
-                    if (config('services.settings.app_environment') != "local") {
+                    if (config('services.settings.app_environment') != 'local') {
                         return Password::min(8)
                             ->mixedCase()
                             ->letters()
                             ->numbers()
                             ->symbols();
                     }
-                    return Password::min(6);
-                }
 
-            ]
+                    return Password::min(6);
+                },
+
+            ],
 
         ];
     }

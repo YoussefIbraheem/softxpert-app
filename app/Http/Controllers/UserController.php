@@ -9,16 +9,13 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
-use Knuckles\Scribe\Attributes\Authenticated;
 use Knuckles\Scribe\Attributes\Group;
-use Knuckles\Scribe\Attributes\Response;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 
-#[Group(name:"User Auth")]
+#[Group(name: 'User Auth')]
 
 class UserController extends Controller
 {
-
     /**
      * Register User
      *
@@ -30,7 +27,7 @@ class UserController extends Controller
     public function register(RegisterRequest $request)
     {
         $request = $request->validated();
-        
+
         $user = User::create([
             'name' => $request['name'],
             'email' => $request['email'],
@@ -42,8 +39,7 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-
-     /**
+    /**
      * Login User
      *
      *
@@ -51,7 +47,7 @@ class UserController extends Controller
      *
      * @throws ValidationException
      */
-    #[ResponseFromApiResource(UserResource::class, User::class,additional:['token'=>"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"])]
+    #[ResponseFromApiResource(UserResource::class, User::class, additional: ['token' => '5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc'])]
     public function login(LoginRequest $request)
     {
 
@@ -59,10 +55,10 @@ class UserController extends Controller
 
         $user = User::where('email', $request['email'])->first();
         if (! $user || ! Hash::check($request['password'], $user->password)) {
-            throw ValidationException::withMessages(["invalid email or password"]);
+            throw ValidationException::withMessages(['invalid email or password']);
         }
 
-        $token = $user->createToken($user->name . '-AuthToken')->plainTextToken;
+        $token = $user->createToken($user->name.'-AuthToken')->plainTextToken;
 
         return [
             'data' => new UserResource($user),
