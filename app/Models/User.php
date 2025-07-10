@@ -46,4 +46,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function assignedTasks()
+    {
+        return $this->belongsToMany(Task::class);
+    }
+
+    public function created_tasks()
+    {
+        return $this->hasMany(Task::class, 'owner_id');
+    }
 }
