@@ -6,14 +6,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, HasRoles, Notifiable;
+    use HasApiTokens, HasFactory, HasRoles, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -49,11 +51,17 @@ class User extends Authenticatable
         ];
     }
 
+    /**
+     * @return BelongsToMany<Task,$this,Pivot>
+     */
     public function assignedTasks(): BelongsToMany
     {
         return $this->belongsToMany(Task::class)->withTimestamps();
     }
 
+    /**
+     * @return HasMany<Task,$this>
+     */
     public function created_tasks(): HasMany
     {
         return $this->hasMany(Task::class, 'owner_id');
