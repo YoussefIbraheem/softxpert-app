@@ -36,8 +36,13 @@ class TaskSeeder extends Seeder
             'owner_id' => $manager->id,
         ]);
 
+        $depndent_tasks = \App\Models\Task::factory()->count(10)->create([
+            'owner_id' => $manager->id,
+        ]);
+
         foreach ($tasks as $task) {
             $task->assignees()->attach($users->pluck('id')->random(rand(1, 3)));
+            $task->dependents()->attach($depndent_tasks->pluck('id')->random(rand(1, 3)));
         }
         $this->command->info('Tasks seeded successfully!');
         $this->command->info('Manager and users created if they did not exist.');

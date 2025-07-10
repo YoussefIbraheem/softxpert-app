@@ -19,8 +19,6 @@ return new class extends Migration
                 ->cascadeOnDelete();
 
             $table->primary(['task_id', 'depends_on_task_id'], 'task_depedencies_unique');
-
-            $table->timestamps();
         });
     }
 
