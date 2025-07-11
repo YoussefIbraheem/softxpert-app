@@ -2,20 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\UserRole;
-use App\Http\Requests\ChangeUserTypeRequest;
-use App\Http\Requests\LoginRequest;
-use App\Http\Requests\RegisterRequest;
-use App\Http\Resources\UserResource;
 use App\Models\User;
-use Illuminate\Http\JsonResponse;
+use App\Enums\UserRole;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
+use App\Http\Requests\LoginRequest;
+use App\Http\Resources\UserResource;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-use Knuckles\Scribe\Attributes\Authenticated;
 use Knuckles\Scribe\Attributes\Group;
+use App\Http\Requests\RegisterRequest;
 use Knuckles\Scribe\Attributes\Response;
+use App\Http\Requests\ChangeUserTypeRequest;
+use Knuckles\Scribe\Attributes\Authenticated;
+use Illuminate\Validation\ValidationException;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
+use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 
 #[Group(name: 'User Auth')]
 
@@ -86,6 +87,31 @@ class UserController extends Controller
         ]);
     }
 
+    #[Authenticated]
+    #[ResponseFromApiResource(UserResource::class, User::class)]
+    public function getUsers(Request $request): AnonymousResourceCollection
+    {
+        $data = User::all();
+
+        return UserResource::collection($data);
+
+
+
+    }
+
+
+    #[Authenticated]
+    #[ResponseFromApiResource(UserResource::class, User::class)]
+    public function getUser(int $id): UserResource
+    {
+        $data = User::findOrFail($id);
+
+        return new UserResource($data);
+
+
+
+    }
+
     /**
      * Change User Role
      *
@@ -96,7 +122,7 @@ class UserController extends Controller
      */
     #[Authenticated]
     #[ResponseFromApiResource(UserResource::class, User::class)]
-    public function change_user_role(ChangeUserTypeRequest $request)
+    public function changeUserRole(ChangeUserTypeRequest $request)
     {
         $user = User::findOrFail($request->user_id);
 

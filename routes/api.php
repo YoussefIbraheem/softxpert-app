@@ -9,7 +9,13 @@ Route::post('/login', [UserController::class, 'login'])->name('users.login');
 // Protected Routes (Require Token)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserController::class, 'logout'])->name('users.logout');
-    Route::middleware('role:admin')->group(function () {
-        Route::post('/change-role', [UserController::class, 'change_user_role'])->name('users.changeRole');
+
+    Route::middleware('role_or_above:admin')->group(function () {
+        Route::post('/change-role', [UserController::class, 'changeUserRole'])->name('users.changeUserRole');
+    });
+
+    Route::middleware('role_or_above:manager')->group(function () {
+        Route::get('/users',[UserController::class, 'getUsers'])->name('users.getUsers');
+        Route::get('/users/{id}',[UserController::class, 'getUser' ])->name('users.getUser');
     });
 });
