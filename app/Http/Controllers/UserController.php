@@ -8,6 +8,7 @@ use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Knuckles\Scribe\Attributes\Authenticated;
@@ -52,33 +53,35 @@ class UserController extends Controller
     #[ResponseFromApiResource(UserResource::class, User::class, additional: ['token' => '5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc'])]
     public function login(LoginRequest $request)
     {
+        $user = User::where('email', $request->email)->first();
 
-        $user = User::where('email', $request['email'])->first();
-        if (! $user || ! Hash::check($request['password'], $user->password)) {
-            throw ValidationException::withMessages(['invalid email or password']);
+        if (! $user || ! Hash::check($request->password, $user->password)) {
+            throw ValidationException::withMessages([
+                'email' => ['The provided credentials are incorrect.'],
+            ]);
         }
 
-        $token = $user->createToken($user->name.'-AuthToken')->plainTextToken;
+        $token = $user->createToken('api-token')->plainTextToken;
 
         return [
             'data' => new UserResource($user),
-
             'access_token' => $token,
         ];
     }
 
+    /**
+     * Logout User
+     *
+     * Log user out
+     */
     #[Authenticated]
     #[Response(['message' => 'Logged out successfully'])]
-    public function logout(): JsonResponse
+    public function logout(Request $request): JsonResponse
     {
-        /**
-         * @var User $user
-         */
-        $user = auth()->guard()->user();
-        $user->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json([
-            'message' => __('Logged out successfully'),
-        ], 200);
+            'message' => 'Logged out successfully!',
+        ]);
     }
 }

@@ -46,9 +46,9 @@ endpoints:
         custom: []
       password:
         name: password
-        description: ''
+        description: 'Must match the regex /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&^_-])[A-Za-z\d@$!%*#?&^_-]{8,}$/.'
         required: true
-        example: '|]|{+-'
+        example: '=iw/kXw)=az<mA)=52)=L%M{8,}'
         type: string
         enumValues: []
         exampleWasSpecified: false
@@ -67,13 +67,13 @@ endpoints:
     cleanBodyParameters:
       name: architecto
       email: zbailey@example.net
-      password: '|]|{+-'
+      password: '=iw/kXw)=az<mA)=52)=L%M{8,}'
       password_confirmation: architecto
     fileParameters: []
     responses:
       -
         status: 200
-        content: '{"id":51,"name":"Ms. Elisabeth Okuneva","email":"gulgowski.asia@example.com","role":null}'
+        content: '{"id":196,"name":"Ms. Elisabeth Okuneva","email":"gulgowski.asia@example.com","role":null}'
         headers: []
         description: ''
         custom: []
@@ -131,7 +131,43 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":{"id":52,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com","role":null},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
+        content: '{"data":{"id":197,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com","role":null},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/logout
+    metadata:
+      groupName: 'User Auth'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Logout User'
+      description: 'Log user out'
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"message":"Logged out successfully"}'
         headers: []
         description: ''
         custom: []
