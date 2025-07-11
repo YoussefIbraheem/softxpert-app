@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Enums\UserRole;
-use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
-use App\Http\Requests\LoginRequest;
-use App\Http\Resources\UserResource;
-use Illuminate\Support\Facades\Hash;
-use Knuckles\Scribe\Attributes\Group;
-use App\Http\Requests\RegisterRequest;
-use Knuckles\Scribe\Attributes\Response;
 use App\Http\Requests\ChangeUserTypeRequest;
-use Knuckles\Scribe\Attributes\Authenticated;
-use Illuminate\Validation\ValidationException;
-use Knuckles\Scribe\Attributes\ResponseFromApiResource;
+use App\Http\Requests\LoginRequest;
+use App\Http\Requests\RegisterRequest;
+use App\Http\Resources\UserResource;
+use App\Models\User;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
+use Knuckles\Scribe\Attributes\Authenticated;
+use Knuckles\Scribe\Attributes\Group;
+use Knuckles\Scribe\Attributes\Response;
+use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 
 #[Group(name: 'User Auth')]
 
@@ -29,8 +29,9 @@ class UserController extends Controller
      *
      * Access Level: N/A
      *
-     * @throws ValidationException
      * @return UserResource
+     *
+     * @throws ValidationException
      */
     #[ResponseFromApiResource(UserResource::class, User::class)]
     public function register(RegisterRequest $request)
@@ -55,8 +56,9 @@ class UserController extends Controller
      *
      * Access Level: N/A
      *
-     * @throws ValidationException
      * @return array
+     *
+     * @throws ValidationException
      */
     #[ResponseFromApiResource(UserResource::class, User::class, additional: ['token' => '5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc'])]
     public function login(LoginRequest $request)
@@ -82,8 +84,6 @@ class UserController extends Controller
      *
      * Log user out
      * Access Level: N/A
-     *
-     * @return JsonResponse
      */
     #[Authenticated]
     #[Response(['message' => 'Logged out successfully'])]
@@ -102,12 +102,9 @@ class UserController extends Controller
      * get list of users
      *
      * Access Level : Manager
-     *
-     * @return AnonymousResourceCollection
-     *
      */
     #[Authenticated]
-    #[ResponseFromApiResource(UserResource::class, User::class)]
+    #[ResponseFromApiResource(UserResource::class, User::class, collection: true,factoryStates:['roles'])]
     public function getUsers(Request $request): AnonymousResourceCollection
     {
         $data = User::all();
@@ -115,15 +112,12 @@ class UserController extends Controller
         return UserResource::collection($data);
     }
 
-
     /**
      * Get User
      *
      * Get a selected user depending on the id
      *
      * Access Level: Manager
-     *
-     * @return UserResource
      */
     #[Authenticated]
     #[ResponseFromApiResource(UserResource::class, User::class)]
@@ -134,15 +128,12 @@ class UserController extends Controller
         return new UserResource($data);
     }
 
-
     /**
      * Get Logged In User
      *
      * get user's own data
      *
      * Access Level: N/A
-     *
-     * @return UserResource
      */
     #[Authenticated]
     #[ResponseFromApiResource(UserResource::class, User::class)]

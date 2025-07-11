@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RoleOrAboveMiddleware
 {
-
     protected array $roleHierarchy = [
         UserRole::USER->value => 1,
         UserRole::MANAGER->value => 2,
@@ -21,9 +20,9 @@ class RoleOrAboveMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next,string $requiredRole): Response
+    public function handle(Request $request, Closure $next, string $requiredRole): Response
     {
-         $user = $request->user();
+        $user = $request->user();
 
         if (! $user) {
             abort(401, 'Unauthenticated');

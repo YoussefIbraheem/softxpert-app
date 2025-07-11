@@ -111,6 +111,17 @@
     <div class="dark-box"></div>
     <div class="content">
         <h1 id="introduction">Introduction</h1>
+<p>This API is a task management backend system built with Laravel. It is designed to facilitate task creation, assignment, dependency tracking, and role-based collaboration within a team.</p>
+<p>Key Features:</p>
+<ul>
+<li><strong>Authentication</strong> using Laravel Sanctum with secure registration and login endpoints.</li>
+<li><strong>Role-based access control</strong> using Spatie Permissions (Admin, Manager, User).</li>
+<li><strong>Task management</strong> including creation, updates, status changes, and filtering by due date, status, and assignee.</li>
+<li><strong>Task dependencies</strong> support to ensure that tasks can't be marked as completed until their dependent tasks are finished.</li>
+<li><strong>RESTful API design</strong> following best practices, with input validation, error handling, and policy-based authorization.</li>
+<li><strong>API Documentation</strong> generated with Scribe, including response samples, authentication headers, and detailed request requirements.</li>
+</ul>
+<p>This documentation is auto-generated and kept up-to-date with the latest API behavior to serve developers and integrators effectively.</p>
 <aside>
     <strong>Base URL</strong>: <code>http://localhost:8000</code>
 </aside>
@@ -184,10 +195,10 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 317,
+    &quot;id&quot;: 347,
     &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
     &quot;email&quot;: &quot;gulgowski.asia@example.com&quot;,
-    &quot;role&quot;: null
+    &quot;role&quot;: &quot;user&quot;
 }</code>
  </pre>
     </span>
@@ -362,10 +373,10 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;id&quot;: 318,
+        &quot;id&quot;: 348,
         &quot;name&quot;: &quot;Mrs. Justina Gaylord&quot;,
         &quot;email&quot;: &quot;lafayette.considine@example.com&quot;,
-        &quot;role&quot;: null
+        &quot;role&quot;: &quot;user&quot;
     },
     &quot;token&quot;: &quot;5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc&quot;
 }</code>
@@ -628,10 +639,10 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 319,
+    &quot;id&quot;: 349,
     &quot;name&quot;: &quot;Mr. Adriel Romaguera&quot;,
     &quot;email&quot;: &quot;antonio24@example.net&quot;,
-    &quot;role&quot;: null
+    &quot;role&quot;: &quot;user&quot;
 }</code>
  </pre>
     </span>
@@ -725,7 +736,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"role_name\": \"user\",
+    \"role_name\": \"manager\",
     \"user_id\": 16
 }"
 </code></pre></div>
@@ -742,7 +753,7 @@ const headers = {
 };
 
 let body = {
-    "role_name": "user",
+    "role_name": "manager",
     "user_id": 16
 };
 
@@ -761,10 +772,10 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 320,
+    &quot;id&quot;: 350,
     &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
     &quot;email&quot;: &quot;idickens@example.org&quot;,
-    &quot;role&quot;: null
+    &quot;role&quot;: &quot;user&quot;
 }</code>
  </pre>
     </span>
@@ -844,10 +855,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="role_name"                data-endpoint="POSTapi-change-role"
-               value="user"
+               value="manager"
                data-component="body">
     <br>
-<p>Example: <code>user</code></p>
+<p>Example: <code>manager</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>manager</code></li> <li><code>user</code></li></ul>
         </div>
@@ -907,12 +918,20 @@ fetch(url, {
         </blockquote>
                 <pre>
 
-<code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 321,
-    &quot;name&quot;: &quot;Mya DuBuque&quot;,
-    &quot;email&quot;: &quot;breitenberg.gilbert@example.com&quot;,
-    &quot;role&quot;: null
-}</code>
+<code class="language-json" style="max-height: 300px;">[
+    {
+        &quot;id&quot;: 351,
+        &quot;name&quot;: &quot;Mya DuBuque&quot;,
+        &quot;email&quot;: &quot;breitenberg.gilbert@example.com&quot;,
+        &quot;role&quot;: &quot;user&quot;
+    },
+    {
+        &quot;id&quot;: 352,
+        &quot;name&quot;: &quot;Morgan Hirthe&quot;,
+        &quot;email&quot;: &quot;dare.emelie@example.com&quot;,
+        &quot;role&quot;: &quot;user&quot;
+    }
+]</code>
  </pre>
     </span>
 <span id="execution-results-GETapi-users" hidden>
@@ -1030,10 +1049,10 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 322,
-    &quot;name&quot;: &quot;Morgan Hirthe&quot;,
-    &quot;email&quot;: &quot;dare.emelie@example.com&quot;,
-    &quot;role&quot;: null
+    &quot;id&quot;: 353,
+    &quot;name&quot;: &quot;Prof. Mina Bauch&quot;,
+    &quot;email&quot;: &quot;okeefe.isidro@example.org&quot;,
+    &quot;role&quot;: &quot;user&quot;
 }</code>
  </pre>
     </span>
