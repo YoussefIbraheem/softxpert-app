@@ -9,6 +9,7 @@ Route::post('/login', [UserController::class, 'login'])->name('users.login');
 // Protected Routes (Require Token)
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserController::class, 'logout'])->name('users.logout');
+    Route::get('/user', [UserController::class,'getLoggedInUser'])->name('user.loggedInUser');
 
     Route::middleware('role_or_above:admin')->group(function () {
         Route::post('/change-role', [UserController::class, 'changeUserRole'])->name('users.changeUserRole');

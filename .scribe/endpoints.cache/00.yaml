@@ -13,7 +13,10 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Register User'
-      description: 'Register new user'
+      description: |-
+        Register new user
+
+        Access Level: N/A
       authenticated: false
       custom: []
     headers:
@@ -73,7 +76,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":198,"name":"Ms. Elisabeth Okuneva","email":"gulgowski.asia@example.com","role":null}'
+        content: '{"id":317,"name":"Ms. Elisabeth Okuneva","email":"gulgowski.asia@example.com","role":null}'
         headers: []
         description: ''
         custom: []
@@ -93,7 +96,10 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Login User'
-      description: 'Login a user and return a token.'
+      description: |-
+        Login a user and return a token.
+
+        Access Level: N/A
       authenticated: false
       custom: []
     headers:
@@ -131,7 +137,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":{"id":199,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com","role":null},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
+        content: '{"data":{"id":318,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com","role":null},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
         headers: []
         description: ''
         custom: []
@@ -151,7 +157,9 @@ endpoints:
       subgroup: ''
       subgroupDescription: ''
       title: 'Logout User'
-      description: 'Log user out'
+      description: |-
+        Log user out
+        Access Level: N/A
       authenticated: true
       custom: []
     headers:
@@ -179,6 +187,45 @@ endpoints:
     custom: []
   -
     httpMethods:
+      - GET
+    uri: api/user
+    metadata:
+      groupName: 'User Auth'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Logged In User'
+      description: |-
+        get user's own data
+
+        Access Level: N/A
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":319,"name":"Mr. Adriel Romaguera","email":"antonio24@example.net","role":null}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
       - POST
     uri: api/change-role
     metadata:
@@ -189,7 +236,8 @@ endpoints:
       title: 'Change User Role'
       description: |-
         Changes the user role from user to manager or vice versa.
-        This Action is only Limited to user with ADMIN access level
+
+        Access Level: Admin
       authenticated: true
       custom: []
     headers:
@@ -204,7 +252,7 @@ endpoints:
         name: role_name
         description: ''
         required: true
-        example: manager
+        example: user
         type: string
         enumValues:
           - manager
@@ -223,13 +271,102 @@ endpoints:
         nullable: false
         custom: []
     cleanBodyParameters:
-      role_name: manager
+      role_name: user
       user_id: 16
     fileParameters: []
     responses:
       -
         status: 200
-        content: '{"id":200,"name":"Ms. Elisabeth Okuneva","email":"idickens@example.org","role":null}'
+        content: '{"id":320,"name":"Ms. Elisabeth Okuneva","email":"idickens@example.org","role":null}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: api/users
+    metadata:
+      groupName: 'User Auth'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Users'
+      description: |-
+        get list of users
+
+        Access Level : Manager
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":321,"name":"Mya DuBuque","email":"breitenberg.gilbert@example.com","role":null}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/users/{id}'
+    metadata:
+      groupName: 'User Auth'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get User'
+      description: |-
+        Get a selected user depending on the id
+
+        Access Level: Manager
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the user.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":322,"name":"Morgan Hirthe","email":"dare.emelie@example.com","role":null}'
         headers: []
         description: ''
         custom: []

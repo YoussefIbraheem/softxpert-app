@@ -27,7 +27,10 @@ class UserController extends Controller
      *
      * Register new user
      *
+     * Access Level: N/A
+     *
      * @throws ValidationException
+     * @return UserResource
      */
     #[ResponseFromApiResource(UserResource::class, User::class)]
     public function register(RegisterRequest $request)
@@ -50,7 +53,10 @@ class UserController extends Controller
      *
      * Login a user and return a token.
      *
+     * Access Level: N/A
+     *
      * @throws ValidationException
+     * @return array
      */
     #[ResponseFromApiResource(UserResource::class, User::class, additional: ['token' => '5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc'])]
     public function login(LoginRequest $request)
@@ -75,6 +81,9 @@ class UserController extends Controller
      * Logout User
      *
      * Log user out
+     * Access Level: N/A
+     *
+     * @return JsonResponse
      */
     #[Authenticated]
     #[Response(['message' => 'Logged out successfully'])]
@@ -87,6 +96,16 @@ class UserController extends Controller
         ]);
     }
 
+    /**
+     * Get Users
+     *
+     * get list of users
+     *
+     * Access Level : Manager
+     *
+     * @return AnonymousResourceCollection
+     *
+     */
     #[Authenticated]
     #[ResponseFromApiResource(UserResource::class, User::class)]
     public function getUsers(Request $request): AnonymousResourceCollection
@@ -94,12 +113,18 @@ class UserController extends Controller
         $data = User::all();
 
         return UserResource::collection($data);
-
-
-
     }
 
 
+    /**
+     * Get User
+     *
+     * Get a selected user depending on the id
+     *
+     * Access Level: Manager
+     *
+     * @return UserResource
+     */
     #[Authenticated]
     #[ResponseFromApiResource(UserResource::class, User::class)]
     public function getUser(int $id): UserResource
@@ -107,16 +132,33 @@ class UserController extends Controller
         $data = User::findOrFail($id);
 
         return new UserResource($data);
+    }
 
 
+    /**
+     * Get Logged In User
+     *
+     * get user's own data
+     *
+     * Access Level: N/A
+     *
+     * @return UserResource
+     */
+    #[Authenticated]
+    #[ResponseFromApiResource(UserResource::class, User::class)]
+    public function getLoggedInUser(Request $request): UserResource
+    {
+        $user = $request->user();
 
+        return new UserResource($user);
     }
 
     /**
      * Change User Role
      *
      * Changes the user role from user to manager or vice versa.
-     * This Action is only Limited to user with ADMIN access level
+     *
+     * Access Level: Admin
      *
      * @return UserResource
      */
