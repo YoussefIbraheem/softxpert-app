@@ -77,6 +77,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="user-auth-POSTapi-login">
                                 <a href="#user-auth-POSTapi-login">Login User</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="user-auth-POSTapi-logout">
+                                <a href="#user-auth-POSTapi-logout">Logout User</a>
+                            </li>
                                                                         </ul>
                             </ul>
             </div>
@@ -88,7 +91,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: July 10, 2025</li>
+        <li>Last updated: July 11, 2025</li>
     </ul>
 </div>
 
@@ -130,7 +133,7 @@ You can switch the language used with the tabs at the top right (or from the nav
     --data "{
     \"name\": \"architecto\",
     \"email\": \"zbailey@example.net\",
-    \"password\": \"|]|{+-\",
+    \"password\": \"=iw\\/kXw)=az&lt;mA)=52)=L%M{8,}\",
     \"password_confirmation\": \"architecto\"
 }"
 </code></pre></div>
@@ -149,7 +152,7 @@ const headers = {
 let body = {
     "name": "architecto",
     "email": "zbailey@example.net",
-    "password": "|]|{+-",
+    "password": "=iw\/kXw)=az&lt;mA)=52)=L%M{8,}",
     "password_confirmation": "architecto"
 };
 
@@ -168,7 +171,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 51,
+    &quot;id&quot;: 196,
     &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
     &quot;email&quot;: &quot;gulgowski.asia@example.com&quot;,
     &quot;role&quot;: null
@@ -273,10 +276,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="password"                data-endpoint="POSTapi-register"
-               value="|]|{+-"
+               value="=iw/kXw)=az<mA)=52)=L%M{8,}"
                data-component="body">
     <br>
-<p>Example: <code>|]|{+-</code></p>
+<p>Must match the regex /^(?=.<em>[a-z])(?=.</em>[A-Z])(?=.<em>\d)(?=.</em>[@$!%<em>#?&amp;^_-])[A-Za-z\d@$!%</em>#?&amp;^_-]{8,}$/. Example: <code>=iw/kXw)=az&lt;mA)=52)=L%M{8,}</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>password_confirmation</code></b>&nbsp;&nbsp;
@@ -345,7 +348,7 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;id&quot;: 52,
+        &quot;id&quot;: 197,
         &quot;name&quot;: &quot;Mrs. Justina Gaylord&quot;,
         &quot;email&quot;: &quot;lafayette.considine@example.com&quot;,
         &quot;role&quot;: null
@@ -447,6 +450,124 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Example: <code>|]|{+-</code></p>
         </div>
         </form>
+
+                    <h2 id="user-auth-POSTapi-logout">Logout User</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Log user out</p>
+
+<span id="example-requests-POSTapi-logout">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8000/api/logout" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/logout"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-logout">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;message&quot;: &quot;Logged out successfully&quot;
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-logout" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-logout"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-logout"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-logout" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-logout">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-logout" data-method="POST"
+      data-path="api/logout"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-logout', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-logout"
+                    onclick="tryItOut('POSTapi-logout');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-logout"
+                    onclick="cancelTryOut('POSTapi-logout');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-logout"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/logout</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-logout"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-logout"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        </form>
 
             
 

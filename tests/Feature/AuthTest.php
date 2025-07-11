@@ -1,5 +1,9 @@
 <?php
 
+use App\Enums\UserRole;
+use App\Models\User;
+use Laravel\Sanctum\Sanctum;
+
 test('user can register', function () {
     $name = Faker\Factory::create()->name;
     $email = Faker\Factory::create()->safeEmail;
@@ -160,4 +164,20 @@ test('user cannot register with existing email', function () {
 test('user cannot login with missing fields', function () {
     $response = $this->postJson('/api/login', []);
     $response->assertStatus(422);
+});
+
+test('user can logout', function () {
+    $user = User::factory()->create();
+    $user->assignRole(UserRole::USER);
+    $this->postJson('/api/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
+
+    Sanctum::actingAs($user);
+
+    $response = $this->postJson('/api/logout');
+
+    $response->assertStatus(200);
+
 });
