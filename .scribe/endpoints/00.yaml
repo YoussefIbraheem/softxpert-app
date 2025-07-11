@@ -71,7 +71,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":196,"name":"Ms. Elisabeth Okuneva","email":"gulgowski.asia@example.com","role":null}'
+        content: '{"id":198,"name":"Ms. Elisabeth Okuneva","email":"gulgowski.asia@example.com","role":null}'
         headers: []
         description: ''
         custom: []
@@ -129,7 +129,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":{"id":197,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com","role":null},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
+        content: '{"data":{"id":199,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com","role":null},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
         headers: []
         description: ''
         custom: []
@@ -166,6 +166,68 @@ endpoints:
       -
         status: 200
         content: '{"message":"Logged out successfully"}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/change-role
+    metadata:
+      groupName: 'User Auth'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Change User Role'
+      description: |-
+        Changes the user role from user to manager or vice versa.
+        This Action is only Limited to user with ADMIN access level
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      role_name:
+        name: role_name
+        description: ''
+        required: true
+        example: manager
+        type: string
+        enumValues:
+          - manager
+          - user
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      user_id:
+        name: user_id
+        description: 'The <code>id</code> of an existing record in the users table.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      role_name: manager
+      user_id: 16
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":200,"name":"Ms. Elisabeth Okuneva","email":"idickens@example.org","role":null}'
         headers: []
         description: ''
         custom: []

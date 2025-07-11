@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
+use App\Http\Requests\ChangeUserTypeRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
@@ -83,5 +84,34 @@ class UserController extends Controller
         return response()->json([
             'message' => 'Logged out successfully!',
         ]);
+    }
+
+    /**
+     * Change User Role
+     *
+     * Changes the user role from user to manager or vice versa.
+     * This Action is only Limited to user with ADMIN access level
+     *
+     * @return UserResource
+     */
+    #[Authenticated]
+    #[ResponseFromApiResource(UserResource::class, User::class)]
+    public function change_user_role(ChangeUserTypeRequest $request)
+    {
+        $user = User::findOrFail($request->user_id);
+
+        if ($request->user_id == $request->user()->id) {
+            abort(403, 'You cannot change your own role.');
+        }
+
+        if ($user->hasRole(UserRole::ADMIN)) {
+            abort(403, 'You cannot change an admin\'s role.');
+        }
+
+        $user->syncRoles([]);
+
+        $user->assignRole($request->role_name);
+
+        return new UserResource($user);
     }
 }
