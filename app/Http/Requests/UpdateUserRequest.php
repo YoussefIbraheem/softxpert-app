@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateUserRequest extends FormRequest
@@ -24,7 +25,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'nullable|string',
             'email' => 'nullable|string|email|unique:users,email,'.$this->user()?->id,
-            'password' => "nullable|string|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&^_-])[A-Za-z\d@$!%*#?&^_-]{8,}$/|confirmed",
+            'password' => "nullable|string|confirmed|regex:". User::getUserRegex(),
             'password_confirmation' => 'required_unless:password,null',
 
         ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 
 class RegisterRequest extends FormRequest
@@ -24,7 +25,7 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'string|required',
             'email' => 'string|required|email|unique:users,email',
-            'password' => 'required|string|confirmed|regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&^_-])[A-Za-z\d@$!%*#?&^_-]{8,}$/',
+            'password' => 'required|string|confirmed|regex:'. User::getUserRegex(),
             'password_confirmation' => 'required|string',
 
         ];
