@@ -7,9 +7,12 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Knuckles\Scribe\Attributes\Authenticated;
 use Knuckles\Scribe\Attributes\Group;
+use Knuckles\Scribe\Attributes\Response;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
 
 #[Group(name: 'User Auth')]
@@ -62,5 +65,20 @@ class UserController extends Controller
 
             'access_token' => $token,
         ];
+    }
+
+    #[Authenticated]
+    #[Response(['message' => 'Logged out successfully'])]
+    public function logout(): JsonResponse
+    {
+        /**
+         * @var User $user
+         */
+        $user = auth()->guard()->user();
+        $user->tokens()->delete();
+
+        return response()->json([
+            'message' => __('Logged out successfully'),
+        ], 200);
     }
 }
