@@ -74,7 +74,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":347,"name":"Ms. Elisabeth Okuneva","email":"gulgowski.asia@example.com","role":"user"}'
+        content: '{"id":552,"name":"Ms. Elisabeth Okuneva","email":"gulgowski.asia@example.com","role":"user"}'
         headers: []
         description: ''
         custom: []
@@ -135,7 +135,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":{"id":348,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com","role":"user"},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
+        content: '{"data":{"id":553,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com","role":"user"},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
         headers: []
         description: ''
         custom: []
@@ -157,6 +157,7 @@ endpoints:
       title: 'Logout User'
       description: |-
         Log user out
+
         Access Level: N/A
       authenticated: true
       custom: []
@@ -212,7 +213,90 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":349,"name":"Mr. Adriel Romaguera","email":"antonio24@example.net","role":"user"}'
+        content: '{"id":554,"name":"Mr. Adriel Romaguera","email":"antonio24@example.net","role":"user"}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: api/user/update
+    metadata:
+      groupName: 'User Auth'
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update User'
+      description: |-
+        Update user's own data such as (name ,  email , password)
+        Password confirmation is required only when there is a new password entered
+
+        Access Level: N/A
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      name:
+        name: name
+        description: ''
+        required: false
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      email:
+        name: email
+        description: 'Must be a valid email address.'
+        required: false
+        example: zbailey@example.net
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      password:
+        name: password
+        description: 'Must match the regex /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&^_-])[A-Za-z\d@$!%*#?&^_-]{8,}$/.'
+        required: false
+        example: '=iw/kXw)=az<mA)=52)=L%M{8,}'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      password_confirmation:
+        name: password_confirmation
+        description: 'This field is required unless <code>password</code> is in <code>null</code>.'
+        required: false
+        example: null
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      name: architecto
+      email: zbailey@example.net
+      password: '=iw/kXw)=az<mA)=52)=L%M{8,}'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":555,"name":"Mina Bauch","email":"okeefe.isidro@example.org","role":"user"}'
         headers: []
         description: ''
         custom: []
@@ -250,7 +334,7 @@ endpoints:
         name: role_name
         description: ''
         required: true
-        example: manager
+        example: user
         type: string
         enumValues:
           - manager
@@ -269,13 +353,13 @@ endpoints:
         nullable: false
         custom: []
     cleanBodyParameters:
-      role_name: manager
+      role_name: user
       user_id: 16
     fileParameters: []
     responses:
       -
         status: 200
-        content: '{"id":350,"name":"Ms. Elisabeth Okuneva","email":"idickens@example.org","role":"user"}'
+        content: '{"id":556,"name":"Ms. Elisabeth Okuneva","email":"idickens@example.org","role":"user"}'
         headers: []
         description: ''
         custom: []
@@ -314,7 +398,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '[{"id":351,"name":"Mya DuBuque","email":"breitenberg.gilbert@example.com","role":"user"},{"id":352,"name":"Morgan Hirthe","email":"dare.emelie@example.com","role":"user"}]'
+        content: '[{"id":557,"name":"Mya DuBuque","email":"breitenberg.gilbert@example.com","role":"user"},{"id":558,"name":"Morgan Hirthe","email":"dare.emelie@example.com","role":"user"}]'
         headers: []
         description: ''
         custom: []
@@ -346,7 +430,7 @@ endpoints:
     urlParameters:
       id:
         name: id
-        description: 'The ID of the user.'
+        description: "searched user's id"
         required: true
         example: 1
         type: integer
@@ -364,7 +448,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":353,"name":"Prof. Mina Bauch","email":"okeefe.isidro@example.org","role":"user"}'
+        content: '{"id":559,"name":"Prof. Mina Bauch","email":"ztromp@example.org","role":"user"}'
         headers: []
         description: ''
         custom: []

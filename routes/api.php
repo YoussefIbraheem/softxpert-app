@@ -10,6 +10,7 @@ Route::post('/login', [UserController::class, 'login'])->name('users.login');
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [UserController::class, 'logout'])->name('users.logout');
     Route::get('/user', [UserController::class, 'getLoggedInUser'])->name('user.loggedInUser');
+    Route::post('/user/update', [UserController::class, 'updateUser'])->name('user.updateUser');
 
     Route::middleware('role_or_above:admin')->group(function () {
         Route::post('/change-role', [UserController::class, 'changeUserRole'])->name('users.changeUserRole');

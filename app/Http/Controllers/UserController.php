@@ -6,6 +6,7 @@ use App\Enums\UserRole;
 use App\Http\Requests\ChangeUserTypeRequest;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
@@ -17,6 +18,7 @@ use Knuckles\Scribe\Attributes\Authenticated;
 use Knuckles\Scribe\Attributes\Group;
 use Knuckles\Scribe\Attributes\Response;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
+use Knuckles\Scribe\Attributes\UrlParam;
 
 #[Group(name: 'User Auth')]
 
@@ -83,6 +85,7 @@ class UserController extends Controller
      * Logout User
      *
      * Log user out
+     *
      * Access Level: N/A
      */
     #[Authenticated]
@@ -104,7 +107,7 @@ class UserController extends Controller
      * Access Level : Manager
      */
     #[Authenticated]
-    #[ResponseFromApiResource(UserResource::class, User::class, collection: true,factoryStates:['roles'])]
+    #[ResponseFromApiResource(UserResource::class, User::class, collection: true, factoryStates: ['roles'])]
     public function getUsers(Request $request): AnonymousResourceCollection
     {
         $data = User::all();
@@ -120,7 +123,7 @@ class UserController extends Controller
      * Access Level: Manager
      */
     #[Authenticated]
-    #[ResponseFromApiResource(UserResource::class, User::class)]
+    #[ResponseFromApiResource(UserResource::class, User::class),UrlParam(name: 'id', type: 'int', description: 'searched user\'s id', example: 1)]
     public function getUser(int $id): UserResource
     {
         $data = User::findOrFail($id);
@@ -172,5 +175,25 @@ class UserController extends Controller
         $user->assignRole($request->role_name);
 
         return new UserResource($user);
+    }
+
+    /**
+     * Update User
+     *
+     * Update user's own data such as (name ,  email , password)
+     * Password confirmation is required only when there is a new password entered
+     *
+     * Access Level: N/A
+     */
+    #[Authenticated]
+    #[ResponseFromApiResource(UserResource::class, User::class)]
+    public function updateUser(UpdateUserRequest $request): UserResource
+    {
+        $user = User::findOrFail($request->user()->id);
+
+        $user->update($request->all());
+
+        return new UserResource($user);
+
     }
 }

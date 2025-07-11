@@ -12,17 +12,19 @@ test('admin can change user role to manager', function () {
 
     $this->actingAs($admin);
 
-    $response = $this->post('api/change-role', [
+    $response = $this->postJson('api/change-role', [
         'user_id' => $user->id,
         'role_name' => UserRole::MANAGER->value,
-    ])->assertStatus(200);
-
-    $response->assertJsonFragment([
-        'name' => $user->name,
-        'email' => $user->email,
-        'role' => UserRole::MANAGER->value,
     ]);
 
+    $response->assertStatus(200)
+        ->assertJsonFragment([
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => UserRole::MANAGER->value,
+        ]);
+
+    expect($user->fresh()->hasRole(UserRole::MANAGER))->toBeTrue();
 });
 
 test('admin can change manager role to user', function () {
@@ -34,78 +36,108 @@ test('admin can change manager role to user', function () {
 
     $this->actingAs($admin);
 
-    $response = $this->post('api/change-role', [
+    $response = $this->postJson('api/change-role', [
         'user_id' => $manager->id,
         'role_name' => UserRole::USER->value,
-    ])->assertStatus(200);
-
-    $response->assertJsonFragment([
-        'name' => $manager->name,
-        'email' => $manager->email,
-        'role' => UserRole::USER->value,
     ]);
 
+    $response->assertStatus(200)
+        ->assertJsonFragment([
+            'name' => $manager->name,
+            'email' => $manager->email,
+            'role' => UserRole::USER->value,
+        ]);
+
+    expect($manager->fresh()->hasRole(UserRole::USER))->toBeTrue();
 });
 
-test('admin cannot change other admin role', function () {
+test('admin cannot change other admin role or own role', function () {
+    $admin1 = User::factory()->create();
+    $admin2 = User::factory()->create();
 
-    $admin_1 = User::factory()->create();
-    $admin_2 = User::factory()->create();
+    $admin1->assignRole(UserRole::ADMIN);
+    $admin2->assignRole(UserRole::ADMIN);
 
-    $admin_1->assignRole(UserRole::ADMIN);
-    $admin_2->assignRole(UserRole::ADMIN);
+    $this->actingAs($admin1);
 
-    $this->actingAs($admin_1);
-
-    $this->post('api/change-role', [
-        'user_id' => $admin_1->id,
+    // Own role
+    $this->postJson('api/change-role', [
+        'user_id' => $admin1->id,
         'role_name' => UserRole::USER->value,
     ])->assertStatus(403);
 
-    $this->post('api/change-role', [
-        'user_id' => $admin_1->id,
+    // Other admin's role
+    $this->postJson('api/change-role', [
+        'user_id' => $admin2->id,
+        'role_name' => UserRole::USER->value,
+    ])->assertStatus(403);
+
+    expect($admin2->fresh()->hasRole(UserRole::ADMIN))->toBeTrue();
+});
+
+test('non-admins cannot change roles', function () {
+    $manager = User::factory()->create();
+    $user = User::factory()->create();
+
+    $manager->assignRole(UserRole::MANAGER);
+    $user->assignRole(UserRole::USER);
+
+    // Manager trying to promote user
+    $this->actingAs($manager);
+
+    $this->postJson('api/change-role', [
+        'user_id' => $user->id,
         'role_name' => UserRole::MANAGER->value,
     ])->assertStatus(403);
 
+    // User trying to change another user's role
+    $this->actingAs($user);
+
+    $this->postJson('api/change-role', [
+        'user_id' => $manager->id,
+        'role_name' => UserRole::USER->value,
+    ])->assertStatus(403);
 });
 
-test('admin cannot change it\'s own role', function () {
+test('only manager and admin can get list of users', function () {
     $admin = User::factory()->create();
+    $manager = User::factory()->create();
+    $user = User::factory()->create();
 
     $admin->assignRole(UserRole::ADMIN);
+    $manager->assignRole(UserRole::MANAGER);
+    $user->assignRole(UserRole::USER);
 
+    // Admin
     $this->actingAs($admin);
+    $this->getJson('/api/users')->assertStatus(200);
 
-    $this->post('api/change-role', [
-        'user_id' => $admin->id,
-        'role_name' => UserRole::USER->value,
-    ])->assertStatus(403);
+    // Manager
+    $this->actingAs($manager);
+    $this->getJson('/api/users')->assertStatus(200);
 
-    $this->post('api/change-role', [
-        'user_id' => $admin->id,
-        'role_name' => UserRole::MANAGER->value,
-    ])->assertStatus(403);
+    // User
+    $this->actingAs($user);
+    $this->getJson('/api/users')->assertStatus(403);
 });
 
-test('non-admin cannot change other user\'s role', function () {
-    $user_1 = User::factory()->create();
-    $user_2 = User::factory()->create();
+test('user can update their own name', function () {
+    $user = User::factory()->create([
+        'name' => 'Original Name',
+    ]);
+    $user->assignRole(UserRole::USER);
 
-    $user_1->assignRole(UserRole::MANAGER);
-    $user_2->assignRole(UserRole::USER);
+    $this->actingAs($user);
 
-    $this->actingAs($user_1);
+    $response = $this->postJson('/api/user/update', [
+        'name' => 'Updated Name',
+    ]);
 
-    $this->post('api/change-role', [
-        'user_id' => $user_2->id,
-        'role_name' => UserRole::MANAGER->value,
-    ])->assertStatus(403);
+    $response->assertStatus(200)
+        ->assertJsonFragment([
+            'name' => 'Updated Name',
+            'email' => $user->email,
+        ]);
 
-    $this->actingAs($user_2);
-
-    $this->post('api/change-role', [
-        'user_id' => $user_1->id,
-        '' => UserRole::USER->value,
-    ])->assertStatus(403);
-
+    expect($user->fresh()->name)->toBe('Updated Name');
 });

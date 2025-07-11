@@ -11,10 +11,10 @@ use function Knuckles\Scribe\Config\removeStrategies;
 
 return [
     // The HTML <title> for the generated documentation.
-    'title' => config('app.name') . ' API Documentation',
+    'title' => config('app.name').' API Documentation',
 
     // A short description of your API. Will be included in the docs webpage, Postman collection and OpenAPI spec.
-    'description' => <<<DESCRIPTION
+    'description' => <<<'DESCRIPTION'
 This API is a task management backend system built with Laravel. It is designed to facilitate task creation, assignment, dependency tracking, and role-based collaboration within a team.
 
 Key Features:
