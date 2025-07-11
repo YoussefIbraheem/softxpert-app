@@ -4,180 +4,160 @@ use App\Enums\UserRole;
 use App\Models\User;
 use Laravel\Sanctum\Sanctum;
 
-test('user can register', function () {
-    $name = Faker\Factory::create()->name;
-    $email = Faker\Factory::create()->safeEmail;
-    $password = 'Password@123';
+test('user can register successfully', function () {
+    $data = [
+        'name' => fake()->name(),
+        'email' => fake()->safeEmail(),
+        'password' => 'Password@123',
+        'password_confirmation' => 'Password@123',
+    ];
 
-    $response = $this->postJson('/api/register', [
-        'name' => $name,
-        'email' => $email,
-        'password' => $password,
-        'password_confirmation' => $password,
-    ]);
+    $response = $this->postJson('/api/register', $data);
 
-    $response->assertStatus(201);
-    $response->assertHeader('Content-Type', 'application/json');
-    $response->assertJsonFragment([
-        'name' => $name,
-        'email' => $email,
-        'role' => 'user',
-    ]);
+    $response->assertStatus(201)
+        ->assertHeader('Content-Type', 'application/json')
+        ->assertJsonFragment([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'role' => 'user',
+        ]);
 
     $this->assertDatabaseHas('users', [
-        'name' => $name,
-        'email' => $email,
+        'email' => $data['email'],
+        'name' => $data['name'],
     ]);
 });
 
-test('user can login', function () {
-    $name = Faker\Factory::create()->name;
-    $email = Faker\Factory::create()->safeEmail;
+test('user can login and receive token', function () {
     $password = 'Password@123';
+    $user = User::factory()->create([
+        'password' => bcrypt($password),
+    ]);
 
-    $this->postJson('/api/register', [
-        'name' => $name,
-        'email' => $email,
-        'password' => $password,
-        'password_confirmation' => $password,
-    ])->assertStatus(201);
+    $user->assignRole(UserRole::USER);
 
     $response = $this->postJson('/api/login', [
-        'email' => $email,
+        'email' => $user->email,
         'password' => $password,
     ]);
 
-    $response->assertStatus(200);
-    $response->assertHeader('Content-Type', 'application/json');
-    $response->assertJsonFragment([
-        'name' => $name,
-        'email' => $email,
-        'role' => 'user',
-    ]);
-    $response->assertJsonStructure([
-        'data' => [
-            'id',
-            'name',
-            'email',
-            'role',
-        ],
-        'access_token',
-    ]);
+    $response->assertStatus(200)
+        ->assertJsonFragment([
+            'name' => $user->name,
+            'email' => $user->email,
+            'role' => 'user',
+        ])
+        ->assertJsonStructure([
+            'data' => ['id', 'name', 'email', 'role'],
+            'access_token',
+        ]);
 });
 
-test('user needs to follow password criteria', function () {
-    $name = Faker\Factory::create()->name;
-    $email = Faker\Factory::create()->safeEmail;
-    $passwords = ['password@123', 'Password123', 'Password@', 'Pass@1'];
+test('user must follow password complexity rules', function () {
+    $invalidPasswords = ['password@123', 'Password123', 'Password@', 'Pass@1'];
 
-    foreach ($passwords as $password) {
+    foreach ($invalidPasswords as $pwd) {
         $response = $this->postJson('/api/register', [
-            'name' => $name,
-            'email' => $email,
-            'password' => $password,
-            'password_confirmation' => $password,
+            'name' => fake()->name(),
+            'email' => fake()->safeEmail(),
+            'password' => $pwd,
+            'password_confirmation' => $pwd,
         ]);
 
         $response->assertStatus(422);
     }
 });
 
-test('user cannot register with invalid email', function () {
-    $name = Faker\Factory::create()->name;
-    $email = Faker\Factory::create()->name; // Not a valid email
-    $password = 'Password@123';
-
+test('user cannot register with invalid email format', function () {
     $response = $this->postJson('/api/register', [
-        'name' => $name,
-        'email' => $email,
-        'password' => $password,
-        'password_confirmation' => $password,
+        'name' => fake()->name(),
+        'email' => fake()->name(), // invalid email
+        'password' => 'Password@123',
+        'password_confirmation' => 'Password@123',
     ]);
 
-    $response->assertStatus(422);
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors('email');
 });
 
 test('user cannot login with non-existent credentials', function () {
-    $email = Faker\Factory::create()->safeEmail;
-    $password = 'Password@123';
-
     $response = $this->postJson('/api/login', [
-        'email' => $email,
-        'password' => $password,
+        'email' => fake()->safeEmail(),
+        'password' => 'Password@123',
     ]);
 
-    $response->assertStatus(422);
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors('email');
 });
 
-test('user cannot login with wrong password', function () {
-    $name = Faker\Factory::create()->name;
-    $email = Faker\Factory::create()->safeEmail;
-    $wrongPassword = 'WrongPass@123';
-    $password = 'Password@123';
-
-    $this->postJson('/api/register', [
-        'name' => $name,
-        'email' => $email,
-        'password' => $password,
-        'password_confirmation' => $password,
-    ])->assertStatus(201);
-
-    $response = $this->postJson('/api/login', [
-        'email' => $email,
-        'password' => $wrongPassword,
+test('user cannot login with incorrect password', function () {
+    $user = User::factory()->create([
+        'password' => bcrypt('Password@123'),
     ]);
 
-    $response->assertStatus(422);
+    $user->assignRole(UserRole::USER);
+
+    $response = $this->postJson('/api/login', [
+        'email' => $user->email,
+        'password' => 'WrongPassword@123',
+    ]);
+
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors('email');
 });
 
-test('user cannot register with password mismatch', function () {
+test('user cannot register if password confirmation mismatches', function () {
     $response = $this->postJson('/api/register', [
         'name' => 'Mismatch User',
-        'email' => Faker\Factory::create()->safeEmail,
+        'email' => fake()->safeEmail(),
         'password' => 'Password@123',
-        'password_confirmation' => 'Wrong@123',
+        'password_confirmation' => 'Different@123',
     ]);
 
-    $response->assertStatus(422);
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors('password');
 });
 
-test('user cannot register with existing email', function () {
-    $email = Faker\Factory::create()->safeEmail;
+test('user cannot register with already used email', function () {
+    $email = fake()->safeEmail();
 
     $this->postJson('/api/register', [
-        'name' => 'User 1',
+        'name' => 'First User',
         'email' => $email,
         'password' => 'Password@123',
         'password_confirmation' => 'Password@123',
     ])->assertStatus(201);
 
     $response = $this->postJson('/api/register', [
-        'name' => 'User 2',
+        'name' => 'Second User',
         'email' => $email,
         'password' => 'Password@123',
         'password_confirmation' => 'Password@123',
     ]);
 
-    $response->assertStatus(422);
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors('email');
 });
 
-test('user cannot login with missing fields', function () {
+test('user cannot login without required fields', function () {
     $response = $this->postJson('/api/login', []);
-    $response->assertStatus(422);
+    $response->assertStatus(422)
+        ->assertJsonValidationErrors(['email', 'password']);
 });
 
-test('user can logout', function () {
-    $user = User::factory()->create();
-    $user->assignRole(UserRole::USER);
-    $this->postJson('/api/login', [
-        'email' => $user->email,
-        'password' => 'password',
+test('user can logout successfully', function () {
+    $password = 'Password@123';
+    $user = User::factory()->create([
+        'password' => bcrypt($password),
     ]);
+    $user->assignRole(UserRole::USER);
 
     Sanctum::actingAs($user);
 
     $response = $this->postJson('/api/logout');
 
-    $response->assertStatus(200);
-
+    $response->assertStatus(200)
+        ->assertJson([
+            'message' => 'Logged out successfully!',
+        ]);
 });
