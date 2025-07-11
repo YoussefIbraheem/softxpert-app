@@ -25,7 +25,7 @@ class RegisterRequest extends FormRequest
         return [
             'name' => 'string|required',
             'email' => 'string|required|email|unique:users,email',
-            'password' => 'required|string|confirmed|regex:'. User::getUserRegex(),
+            'password' => 'required|string|confirmed|regex:'.User::getUserRegex(),
             'password_confirmation' => 'required|string',
 
         ];

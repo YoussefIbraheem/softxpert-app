@@ -25,7 +25,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'name' => 'nullable|string',
             'email' => 'nullable|string|email|unique:users,email,'.$this->user()?->id,
-            'password' => "nullable|string|confirmed|regex:". User::getUserRegex(),
+            'password' => 'nullable|string|confirmed|regex:'.User::getUserRegex(),
             'password_confirmation' => 'required_unless:password,null',
 
         ];
