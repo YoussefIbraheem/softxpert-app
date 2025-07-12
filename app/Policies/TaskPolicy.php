@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Enums\UserRole;
 use App\Models\Task;
 use App\Models\User;
 
@@ -12,7 +13,7 @@ class TaskPolicy
      */
     public function viewAny(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'manager']);
+        return $user->hasAnyRole([UserRole::ADMIN, UserRole::MANAGER]);
     }
 
     /**
@@ -20,9 +21,8 @@ class TaskPolicy
      */
     public function view(User $user, Task $task): bool
     {
-        return $user->hasAnyRole(['admin', 'manager']) ||
-        $task->assignees->contains($user);
-
+        return $user->hasAnyRole([UserRole::ADMIN, UserRole::MANAGER]) ||
+            $task->assignees->contains($user);
     }
 
     /**
@@ -30,7 +30,7 @@ class TaskPolicy
      */
     public function create(User $user): bool
     {
-        return $user->hasAnyRole(['admin', 'manager']);
+        return $user->hasAnyRole([UserRole::ADMIN, UserRole::MANAGER]);
     }
 
     /**
@@ -38,16 +38,21 @@ class TaskPolicy
      */
     public function update(User $user, Task $task): bool
     {
-        if ($user->hasAnyRole(['admin', 'manager'])) {
+        // Admins can update any task
+        if ($user->hasAnyRole([UserRole::ADMIN, UserRole::MANAGER])) {
             return true;
         }
 
+        // Assignees can only update specific statuses
         if ($task->assignees->contains($user)) {
-            return request()->only('status') && count(request()->all()) === 1;
+            $onlyStatus = request()->only('status');
+
+            if (count(request()->all()) === 1 && isset($onlyStatus['status'])) {
+                return in_array($onlyStatus['status'], ['pending', 'in_progress', 'complete']);
+            }
         }
 
         return false;
-
     }
 
     /**
@@ -55,7 +60,7 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task): bool
     {
-        return $user->id === $task->owner_id || $user->hasAnyRole(['admin', 'manager']);
+        return $user->hasRole(UserRole::ADMIN);
     }
 
     /**
@@ -63,7 +68,7 @@ class TaskPolicy
      */
     public function restore(User $user, Task $task): bool
     {
-        return $user->id === $task->owner_id || $user->hasAnyRole(['admin', 'manager']);
+        return $user->hasRole(UserRole::ADMIN);
     }
 
     /**
@@ -71,6 +76,6 @@ class TaskPolicy
      */
     public function forceDelete(User $user, Task $task): bool
     {
-        return $user->id === $task->owner_id || $user->hasAnyRole(['admin', 'manager']);
+        return $user->hasRole(UserRole::ADMIN);
     }
 }

@@ -27,8 +27,12 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/', [UserController::class, 'getUsers'])->name('users.getUsers');
             Route::get('/{id}', [UserController::class, 'getUser'])->name('users.getUser');
         });
+
+        Route::post('/tasks/create', [TaskController::class, 'store'])->name('tasks.createTask');
+
     });
 
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.getTasks');
     Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.getTaskById');
+
 });

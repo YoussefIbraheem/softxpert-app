@@ -5,6 +5,92 @@ description: ''
 endpoints:
   -
     httpMethods:
+      - POST
+    uri: api/tasks/create
+    metadata:
+      groupName: Tasks
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Create New Task'
+      description: |-
+        - Creates a new task with assignees (users).
+        - user cannot be entered twice.
+        - Default status (Pending)
+        - Access Level: Admin , Manager
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        name: title
+        description: 'Must not be greater than 200 characters.'
+        required: true
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      description:
+        name: description
+        description: 'Must not be greater than 500 characters.'
+        required: false
+        example: 'Et animi quos velit et fugiat.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      assignees_ids:
+        name: assignees_ids
+        description: 'This field is required unless <code>assignees_ids</code> is in <code>null</code>. The <code>id</code> of an existing record in the users table.'
+        required: false
+        example:
+          - 16
+        type: 'integer[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      due_date:
+        name: due_date
+        description: 'Must be a valid date. Must be a valid date in the format <code>Y-m-d H:i:s</code>. Must be a date after or equal to <code>today</code>.'
+        required: true
+        example: '2051-08-05'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      title: b
+      description: 'Et animi quos velit et fugiat.'
+      assignees_ids:
+        - 16
+      due_date: '2051-08-05'
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":21,"title":"Et animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":21,"assignees":[],"depends_on":[],"due_date":"2025-07-21T04:19:38.000000Z","created_at":"2025-07-12T18:35:59.000000Z","updated_at":"2025-07-12T18:35:59.000000Z","is_owner":false}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
       - GET
     uri: api/tasks
     metadata:
@@ -120,7 +206,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '[{"id":374,"title":"Animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":951,"assignees":[],"depends_on":[],"due_date":"2025-07-21T00:53:36.000000Z","created_at":"2025-07-12T15:09:57.000000Z","updated_at":"2025-07-12T15:09:57.000000Z","is_owner":false},{"id":375,"title":"Tempora ex voluptatem laboriosam praesentium quis.","description":"Fugit deleniti distinctio eum doloremque id aut libero. Veniam corporis dolorem mollitia. Nemo odit quia officia est dignissimos. Blanditiis odio veritatis excepturi doloribus delectus fugit.","status":"pending","owner_name":"Mr. Nelson Little MD","owner_id":952,"assignees":[],"depends_on":[],"due_date":"2025-07-28T14:08:07.000000Z","created_at":"2025-07-12T15:09:57.000000Z","updated_at":"2025-07-12T15:09:57.000000Z","is_owner":false}]'
+        content: '[{"id":22,"title":"Animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":22,"assignees":[],"depends_on":[],"due_date":"2025-07-21T04:19:38.000000Z","created_at":"2025-07-12T18:35:59.000000Z","updated_at":"2025-07-12T18:35:59.000000Z","is_owner":false},{"id":23,"title":"Praesentium quis adipisci molestias fugit.","description":"Eum doloremque id aut libero aliquam veniam corporis. Mollitia deleniti nemo odit quia officia. Dignissimos neque blanditiis odio. Excepturi doloribus delectus fugit qui repudiandae laboriosam. Alias tenetur ratione nemo voluptate accusamus ut et.","status":"in_progress","owner_name":"Graham Crist V","owner_id":23,"assignees":[],"depends_on":[],"due_date":"2025-07-21T18:06:21.000000Z","created_at":"2025-07-12T18:35:59.000000Z","updated_at":"2025-07-12T18:35:59.000000Z","is_owner":false}]'
         headers: []
         description: ''
         custom: []
@@ -170,7 +256,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":376,"title":"Et animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":953,"assignees":[],"depends_on":[],"due_date":"2025-07-21T00:53:36.000000Z","created_at":"2025-07-12T15:09:57.000000Z","updated_at":"2025-07-12T15:09:57.000000Z","is_owner":false}'
+        content: '{"id":24,"title":"Et animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":24,"assignees":[],"depends_on":[],"due_date":"2025-07-21T04:19:38.000000Z","created_at":"2025-07-12T18:35:59.000000Z","updated_at":"2025-07-12T18:35:59.000000Z","is_owner":false}'
         headers: []
         description: ''
         custom: []

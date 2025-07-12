@@ -71,7 +71,10 @@
                     <a href="#tasks">Tasks</a>
                 </li>
                                     <ul id="tocify-subheader-tasks" class="tocify-subheader">
-                                                    <li class="tocify-item level-2" data-unique="tasks-GETapi-tasks">
+                                                    <li class="tocify-item level-2" data-unique="tasks-POSTapi-tasks-create">
+                                <a href="#tasks-POSTapi-tasks-create">Create New Task</a>
+                            </li>
+                                                                                <li class="tocify-item level-2" data-unique="tasks-GETapi-tasks">
                                 <a href="#tasks-GETapi-tasks">Get Tasks</a>
                             </li>
                                                                                 <li class="tocify-item level-2" data-unique="tasks-GETapi-tasks--id-">
@@ -153,7 +156,207 @@ You can switch the language used with the tabs at the top right (or from the nav
 
     
 
-                                <h2 id="tasks-GETapi-tasks">Get Tasks</h2>
+                                <h2 id="tasks-POSTapi-tasks-create">Create New Task</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<ul>
+<li>Creates a new task with assignees (users).</li>
+<li>user cannot be entered twice.</li>
+<li>Default status (Pending)</li>
+<li>Access Level: Admin , Manager</li>
+</ul>
+
+<span id="example-requests-POSTapi-tasks-create">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8000/api/tasks/create" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"title\": \"b\",
+    \"description\": \"Et animi quos velit et fugiat.\",
+    \"assignees_ids\": [
+        16
+    ],
+    \"due_date\": \"2051-08-05\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/tasks/create"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "title": "b",
+    "description": "Et animi quos velit et fugiat.",
+    "assignees_ids": [
+        16
+    ],
+    "due_date": "2051-08-05"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-tasks-create">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;id&quot;: 21,
+    &quot;title&quot;: &quot;Et animi quos velit et fugiat.&quot;,
+    &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
+    &quot;status&quot;: &quot;in_progress&quot;,
+    &quot;owner_name&quot;: &quot;Carey Smitham&quot;,
+    &quot;owner_id&quot;: 21,
+    &quot;assignees&quot;: [],
+    &quot;depends_on&quot;: [],
+    &quot;due_date&quot;: &quot;2025-07-21T04:19:38.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
+    &quot;is_owner&quot;: false
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-tasks-create" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-tasks-create"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-tasks-create"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-tasks-create" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-tasks-create">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-tasks-create" data-method="POST"
+      data-path="api/tasks/create"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-tasks-create', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-tasks-create"
+                    onclick="tryItOut('POSTapi-tasks-create');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-tasks-create"
+                    onclick="cancelTryOut('POSTapi-tasks-create');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-tasks-create"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/tasks/create</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-tasks-create"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-tasks-create"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>title</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="title"                data-endpoint="POSTapi-tasks-create"
+               value="b"
+               data-component="body">
+    <br>
+<p>Must not be greater than 200 characters. Example: <code>b</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>description</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="text" style="display: none"
+                              name="description"                data-endpoint="POSTapi-tasks-create"
+               value="Et animi quos velit et fugiat."
+               data-component="body">
+    <br>
+<p>Must not be greater than 500 characters. Example: <code>Et animi quos velit et fugiat.</code></p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>assignees_ids</code></b>&nbsp;&nbsp;
+<small>integer[]</small>&nbsp;
+<i>optional</i> &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="assignees_ids[0]"                data-endpoint="POSTapi-tasks-create"
+               data-component="body">
+        <input type="number" style="display: none"
+               name="assignees_ids[1]"                data-endpoint="POSTapi-tasks-create"
+               data-component="body">
+    <br>
+<p>This field is required unless <code>assignees_ids</code> is in <code>null</code>. The <code>id</code> of an existing record in the users table.</p>
+        </div>
+                <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>due_date</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="due_date"                data-endpoint="POSTapi-tasks-create"
+               value="2051-08-05"
+               data-component="body">
+    <br>
+<p>Must be a valid date. Must be a valid date in the format <code>Y-m-d H:i:s</code>. Must be a date after or equal to <code>today</code>. Example: <code>2051-08-05</code></p>
+        </div>
+        </form>
+
+                    <h2 id="tasks-GETapi-tasks">Get Tasks</h2>
 
 <p>
 <small class="badge badge-darkred">requires authentication</small>
@@ -227,31 +430,31 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;id&quot;: 374,
+        &quot;id&quot;: 22,
         &quot;title&quot;: &quot;Animi quos velit et fugiat.&quot;,
         &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
         &quot;status&quot;: &quot;in_progress&quot;,
         &quot;owner_name&quot;: &quot;Carey Smitham&quot;,
-        &quot;owner_id&quot;: 951,
+        &quot;owner_id&quot;: 22,
         &quot;assignees&quot;: [],
         &quot;depends_on&quot;: [],
-        &quot;due_date&quot;: &quot;2025-07-21T00:53:36.000000Z&quot;,
-        &quot;created_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
+        &quot;due_date&quot;: &quot;2025-07-21T04:19:38.000000Z&quot;,
+        &quot;created_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
         &quot;is_owner&quot;: false
     },
     {
-        &quot;id&quot;: 375,
-        &quot;title&quot;: &quot;Tempora ex voluptatem laboriosam praesentium quis.&quot;,
-        &quot;description&quot;: &quot;Fugit deleniti distinctio eum doloremque id aut libero. Veniam corporis dolorem mollitia. Nemo odit quia officia est dignissimos. Blanditiis odio veritatis excepturi doloribus delectus fugit.&quot;,
-        &quot;status&quot;: &quot;pending&quot;,
-        &quot;owner_name&quot;: &quot;Mr. Nelson Little MD&quot;,
-        &quot;owner_id&quot;: 952,
+        &quot;id&quot;: 23,
+        &quot;title&quot;: &quot;Praesentium quis adipisci molestias fugit.&quot;,
+        &quot;description&quot;: &quot;Eum doloremque id aut libero aliquam veniam corporis. Mollitia deleniti nemo odit quia officia. Dignissimos neque blanditiis odio. Excepturi doloribus delectus fugit qui repudiandae laboriosam. Alias tenetur ratione nemo voluptate accusamus ut et.&quot;,
+        &quot;status&quot;: &quot;in_progress&quot;,
+        &quot;owner_name&quot;: &quot;Graham Crist V&quot;,
+        &quot;owner_id&quot;: 23,
         &quot;assignees&quot;: [],
         &quot;depends_on&quot;: [],
-        &quot;due_date&quot;: &quot;2025-07-28T14:08:07.000000Z&quot;,
-        &quot;created_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
+        &quot;due_date&quot;: &quot;2025-07-21T18:06:21.000000Z&quot;,
+        &quot;created_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
         &quot;is_owner&quot;: false
     }
 ]</code>
@@ -452,17 +655,17 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 376,
+    &quot;id&quot;: 24,
     &quot;title&quot;: &quot;Et animi quos velit et fugiat.&quot;,
     &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
     &quot;status&quot;: &quot;in_progress&quot;,
     &quot;owner_name&quot;: &quot;Carey Smitham&quot;,
-    &quot;owner_id&quot;: 953,
+    &quot;owner_id&quot;: 24,
     &quot;assignees&quot;: [],
     &quot;depends_on&quot;: [],
-    &quot;due_date&quot;: &quot;2025-07-21T00:53:36.000000Z&quot;,
-    &quot;created_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
-    &quot;updated_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
+    &quot;due_date&quot;: &quot;2025-07-21T04:19:38.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
     &quot;is_owner&quot;: false
 }</code>
  </pre>
@@ -612,7 +815,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 943,
+    &quot;id&quot;: 13,
     &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
     &quot;email&quot;: &quot;gulgowski.asia@example.com&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -790,7 +993,7 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;id&quot;: 944,
+        &quot;id&quot;: 14,
         &quot;name&quot;: &quot;Mrs. Justina Gaylord&quot;,
         &quot;email&quot;: &quot;lafayette.considine@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
@@ -1056,7 +1259,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 945,
+    &quot;id&quot;: 15,
     &quot;name&quot;: &quot;Mr. Adriel Romaguera&quot;,
     &quot;email&quot;: &quot;antonio24@example.net&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -1192,7 +1395,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 946,
+    &quot;id&quot;: 16,
     &quot;name&quot;: &quot;Mina Bauch&quot;,
     &quot;email&quot;: &quot;okeefe.isidro@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -1370,7 +1573,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 947,
+    &quot;id&quot;: 17,
     &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
     &quot;email&quot;: &quot;idickens@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -1518,13 +1721,13 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;id&quot;: 948,
+        &quot;id&quot;: 18,
         &quot;name&quot;: &quot;Mya DuBuque&quot;,
         &quot;email&quot;: &quot;breitenberg.gilbert@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
     },
     {
-        &quot;id&quot;: 949,
+        &quot;id&quot;: 19,
         &quot;name&quot;: &quot;Morgan Hirthe&quot;,
         &quot;email&quot;: &quot;dare.emelie@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
@@ -1647,7 +1850,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 950,
+    &quot;id&quot;: 20,
     &quot;name&quot;: &quot;Prof. Mina Bauch&quot;,
     &quot;email&quot;: &quot;ztromp@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;

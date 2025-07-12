@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
+use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\TaskFilterRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
@@ -39,7 +40,7 @@ class TaskController extends Controller
 
         $query = Task::query();
 
-        $query = $this->limitVisibility($user, $query);
+        $query = $this->limitUserVisibility($user, $query);
 
         $perPage = $request->validated('per_page', 10);
 
@@ -90,10 +91,48 @@ class TaskController extends Controller
         $user = $request->user();
         $query = Task::query();
 
-        $task = $this->limitVisibility($user, $query)->where('id', $id)->first();
+        $task = $this->limitUserVisibility($user, $query)->where('id', $id)->first();
 
         if (! $task) {
             abort(404, 'Task not found!');
+        }
+
+        return new TaskResource($task);
+    }
+    /**
+     * Create New Task
+     *
+     * - Creates a new task with assignees (users).
+     * - user cannot be entered twice.
+     * - Default status (Pending)
+     * - Access Level: Admin , Manager
+     */
+    #[ResponseFromApiResource(TaskResource::class, Task::class, collection: false, )]
+    public function store(CreateTaskRequest $request): TaskResource
+    {
+        $user = $request->user();
+
+        $data = $request->validated();
+
+        $task = $user->created_tasks()->create($data);
+
+        if (isset($data['assignees_ids'])) {
+
+            foreach ($data['assignees_ids'] as $assignee_id) {
+                $assignee = User::find($assignee_id);
+
+                if (! $assignee) {
+                    abort(404, 'Assignee Id not found!');
+                }
+
+                $assignee_exists = $task->assignees()->where('user_id', $assignee_id)->exists();
+
+                if ($assignee_exists) { // skip duplicate entery
+                    continue;
+                }
+
+                $task->assignees()->attach($assignee);
+            }
         }
 
         return new TaskResource($task);
@@ -102,11 +141,11 @@ class TaskController extends Controller
     /**
      * Limit Visibility
      *
-     * private function used to limit the visibility of the tasks
+     * private function used to limit the visibility of the tasks for users
      *
      * @hideFromAPIDocumentation
      */
-    private function limitVisibility(User $user, $query)
+    private function limitUserVisibility(User $user, $query)
     {
         if ($user->hasRole(UserRole::USER)) {
             $query->whereHas('assignees', function ($q) use ($user) {
