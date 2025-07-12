@@ -11,7 +11,7 @@ class TaskFilterRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true; // This part is already protected by the role middleware
     }
 
     /**
@@ -28,6 +28,7 @@ class TaskFilterRequest extends FormRequest
             'assignee_id' => 'nullable|integer|exists:users,id',
             'due_date_from' => 'nullable|date|before_or_equal:due_date_to',
             'due_date_to' => 'nullable|date|after_or_equal:due_date_from',
+            'per_page' => ['nullable', 'integer', 'min:1', 'max:100'],
         ];
     }
 }

@@ -1,0 +1,130 @@
+name: Tasks
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - GET
+    uri: api/tasks
+    metadata:
+      groupName: Tasks
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Tasks'
+      description: |-
+        Retrieve tasks with optional filters.
+
+        Filters:
+        - `status`: pending, in_progress, completed, cancelled
+        - `title`: partial match
+        - `owner_id`: filter by owner
+        - `assignee_id`: filter by assigned user
+        - `due_date_from`, `due_date_to`: filter by due date range
+
+        Access Level: user (own tasks), manager, admin (all)
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      status:
+        name: status
+        description: ''
+        required: false
+        example: in_progress
+        type: string
+        enumValues:
+          - pending
+          - in_progress
+          - completed
+          - cancelled
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      title:
+        name: title
+        description: 'Must not be greater than 255 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      owner_id:
+        name: owner_id
+        description: 'The <code>id</code> of an existing record in the users table.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      assignee_id:
+        name: assignee_id
+        description: 'The <code>id</code> of an existing record in the users table.'
+        required: false
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      due_date_from:
+        name: due_date_from
+        description: 'Must be a valid date. Must be a date before or equal to <code>due_date_to</code>.'
+        required: false
+        example: '2021-08-05'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      due_date_to:
+        name: due_date_to
+        description: 'Must be a valid date. Must be a date after or equal to <code>due_date_from</code>.'
+        required: false
+        example: '2051-08-05'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      per_page:
+        name: per_page
+        description: 'Must be at least 1. Must not be greater than 100.'
+        required: false
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+    cleanBodyParameters:
+      status: in_progress
+      title: b
+      owner_id: 16
+      assignee_id: 16
+      due_date_from: '2021-08-05'
+      due_date_to: '2051-08-05'
+      per_page: 22
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '[{"id":369,"title":"Animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":930,"assignees":[],"depends_on":[],"due_date":"2025-07-20T23:43:46.000000Z","created_at":"2025-07-12T14:00:07.000000Z","updated_at":"2025-07-12T14:00:07.000000Z","is_owner":false},{"id":370,"title":"Tempora ex voluptatem laboriosam praesentium quis.","description":"Fugit deleniti distinctio eum doloremque id aut libero. Veniam corporis dolorem mollitia. Nemo odit quia officia est dignissimos. Blanditiis odio veritatis excepturi doloribus delectus fugit.","status":"pending","owner_name":"Mr. Nelson Little MD","owner_id":931,"assignees":[],"depends_on":[],"due_date":"2025-07-28T12:58:17.000000Z","created_at":"2025-07-12T14:00:07.000000Z","updated_at":"2025-07-12T14:00:07.000000Z","is_owner":false}]'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

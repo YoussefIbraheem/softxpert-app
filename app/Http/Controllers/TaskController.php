@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enums\UserRole;
+use App\Http\Requests\TaskFilterRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
-use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Knuckles\Scribe\Attributes\Authenticated;
 use Knuckles\Scribe\Attributes\Group;
@@ -30,11 +30,13 @@ class TaskController extends Controller
      * Access Level: user (own tasks), manager, admin (all)
      */
     #[ResponseFromApiResource(TaskResource::class, Task::class, collection: true)]
-    public function index(Request $request): AnonymousResourceCollection
+    public function index(TaskFilterRequest $request): AnonymousResourceCollection
     {
         $user = $request->user();
 
         $query = Task::query();
+
+        $perPage = $request->validated('per_page', 10);
 
         // Limit visibility for users
         if ($user->hasRole(UserRole::USER)) {
@@ -71,7 +73,7 @@ class TaskController extends Controller
         }
 
         // Paginate and return
-        $tasks = $query->paginate(10);
+        $tasks = $query->paginate($perPage);
 
         return TaskResource::collection($tasks);
     }

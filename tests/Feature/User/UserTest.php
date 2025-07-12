@@ -144,13 +144,13 @@ test('user can update their own email', function () {
     $this->actingAs($user);
 
     $response = $this->postJson('/api/user/update', [
-        'email' => $new_email
+        'email' => $new_email,
     ]);
 
     $response->assertStatus(200)
         ->assertJsonFragment([
             'name' => $user->name,
-            'email' => $new_email
+            'email' => $new_email,
         ]);
 
     expect($user->fresh()->email)->toBe($new_email);
@@ -167,15 +167,14 @@ test('user can update their own password', function () {
 
     $response = $this->postJson('/api/user/update', [
         'password' => $new_password,
-        'password_confirmation' => $new_password
+        'password_confirmation' => $new_password,
     ]);
 
     $response->assertStatus(200)
         ->assertJsonFragment([
             'name' => $user->name,
-            'email' => $user->email
+            'email' => $user->email,
         ]);
-
 
     expect(Hash::check($new_password, $user->fresh()->password))->toBe(true);
 });
@@ -184,14 +183,14 @@ test('user cannot update email with existing email', function () {
     $user1 = User::factory()->create([]);
     $user2 = User::factory()->create([]);
 
-     $user1->assignRole(UserRole::USER);
-     $user2->assignRole(UserRole::USER);
+    $user1->assignRole(UserRole::USER);
+    $user2->assignRole(UserRole::USER);
 
-     $this->actingAs($user1);
+    $this->actingAs($user1);
 
-     $response = $this->postJson('api/user/update', [
-        'email'=> $user2->email
-     ]);
+    $response = $this->postJson('api/user/update', [
+        'email' => $user2->email,
+    ]);
 
-     $response->assertStatus(422);
+    $response->assertStatus(422);
 });

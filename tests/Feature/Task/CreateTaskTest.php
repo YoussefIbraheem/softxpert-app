@@ -53,7 +53,7 @@ test('manager can filter tasks by partial title', function () {
 test('manager can filter by owner_id', function () {
     $this->actingAs($this->manager);
 
-    $this->getJson('/api/tasks?owner_id=' . $this->manager->id . '&per_page=50')
+    $this->getJson('/api/tasks?owner_id='.$this->manager->id.'&per_page=50')
         ->assertOk()
         ->assertJsonFragment(['owner_name' => $this->manager->name]);
 });
@@ -61,7 +61,7 @@ test('manager can filter by owner_id', function () {
 test('manager can filter by assignee_id', function () {
     $this->actingAs($this->manager);
 
-    $this->getJson('/api/tasks?assignee_id=' . $this->user->id . '&per_page=50')
+    $this->getJson('/api/tasks?assignee_id='.$this->user->id.'&per_page=50')
         ->assertOk()
         ->assertJsonFragment(['title' => $this->task1->title]);
 });
@@ -74,8 +74,7 @@ test('manager can filter by due_date range', function () {
 
     $this->getJson("/api/tasks?due_from={$from}&due_to={$to}&per_page=50")
         ->assertOk()
-        ->assertJson(fn (AssertableJson $json) =>
-            $json->has('data')->etc()
+        ->assertJson(fn (AssertableJson $json) => $json->has('data')->etc()
         );
 });
 

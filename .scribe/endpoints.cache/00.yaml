@@ -76,7 +76,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":552,"name":"Ms. Elisabeth Okuneva","email":"gulgowski.asia@example.com","role":"user"}'
+        content: '{"id":922,"name":"Ms. Elisabeth Okuneva","email":"gulgowski.asia@example.com","role":"user"}'
         headers: []
         description: ''
         custom: []
@@ -137,7 +137,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"data":{"id":553,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com","role":"user"},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
+        content: '{"data":{"id":923,"name":"Mrs. Justina Gaylord","email":"lafayette.considine@example.com","role":"user"},"token":"5|kBPlXpDNHg491Yg5qTJr2jdTq9PL8L8Z8i0w4jYz22d20fdc"}'
         headers: []
         description: ''
         custom: []
@@ -215,7 +215,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":554,"name":"Mr. Adriel Romaguera","email":"antonio24@example.net","role":"user"}'
+        content: '{"id":924,"name":"Mr. Adriel Romaguera","email":"antonio24@example.net","role":"user"}'
         headers: []
         description: ''
         custom: []
@@ -298,7 +298,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":555,"name":"Mina Bauch","email":"okeefe.isidro@example.org","role":"user"}'
+        content: '{"id":925,"name":"Mina Bauch","email":"okeefe.isidro@example.org","role":"user"}'
         headers: []
         description: ''
         custom: []
@@ -336,7 +336,7 @@ endpoints:
         name: role_name
         description: ''
         required: true
-        example: user
+        example: manager
         type: string
         enumValues:
           - manager
@@ -355,13 +355,13 @@ endpoints:
         nullable: false
         custom: []
     cleanBodyParameters:
-      role_name: user
+      role_name: manager
       user_id: 16
     fileParameters: []
     responses:
       -
         status: 200
-        content: '{"id":556,"name":"Ms. Elisabeth Okuneva","email":"idickens@example.org","role":"user"}'
+        content: '{"id":926,"name":"Ms. Elisabeth Okuneva","email":"idickens@example.org","role":"user"}'
         headers: []
         description: ''
         custom: []
@@ -400,7 +400,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '[{"id":557,"name":"Mya DuBuque","email":"breitenberg.gilbert@example.com","role":"user"},{"id":558,"name":"Morgan Hirthe","email":"dare.emelie@example.com","role":"user"}]'
+        content: '[{"id":927,"name":"Mya DuBuque","email":"breitenberg.gilbert@example.com","role":"user"},{"id":928,"name":"Morgan Hirthe","email":"dare.emelie@example.com","role":"user"}]'
         headers: []
         description: ''
         custom: []
@@ -450,7 +450,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":559,"name":"Prof. Mina Bauch","email":"ztromp@example.org","role":"user"}'
+        content: '{"id":929,"name":"Prof. Mina Bauch","email":"ztromp@example.org","role":"user"}'
         headers: []
         description: ''
         custom: []

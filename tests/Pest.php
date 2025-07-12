@@ -1,8 +1,7 @@
 <?php
 
-use Database\Seeders\RoleSeeder;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,4 +51,3 @@ function something()
 {
     // ..
 }
-

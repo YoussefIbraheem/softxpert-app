@@ -35,7 +35,7 @@ class TaskResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 
-            'is_owner' => $this->owner_id === $request->user()->id,
+            'is_owner' => $this->owner_id === $request->user()?->id,
         ];
     }
 }
