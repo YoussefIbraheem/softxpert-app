@@ -2,6 +2,7 @@
 
 use App\Enums\UserRole;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 test('admin can change user role to manager', function () {
     $admin = User::factory()->create();
@@ -60,13 +61,11 @@ test('admin cannot change other admin role or own role', function () {
 
     $this->actingAs($admin1);
 
-    // Own role
     $this->postJson('api/change-role', [
         'user_id' => $admin1->id,
         'role_name' => UserRole::USER->value,
     ])->assertStatus(403);
 
-    // Other admin's role
     $this->postJson('api/change-role', [
         'user_id' => $admin2->id,
         'role_name' => UserRole::USER->value,
@@ -82,17 +81,13 @@ test('non-admins cannot change roles', function () {
     $manager->assignRole(UserRole::MANAGER);
     $user->assignRole(UserRole::USER);
 
-    // Manager trying to promote user
     $this->actingAs($manager);
-
     $this->postJson('api/change-role', [
         'user_id' => $user->id,
         'role_name' => UserRole::MANAGER->value,
     ])->assertStatus(403);
 
-    // User trying to change another user's role
     $this->actingAs($user);
-
     $this->postJson('api/change-role', [
         'user_id' => $manager->id,
         'role_name' => UserRole::USER->value,
@@ -108,15 +103,12 @@ test('only manager and admin can get list of users', function () {
     $manager->assignRole(UserRole::MANAGER);
     $user->assignRole(UserRole::USER);
 
-    // Admin
     $this->actingAs($admin);
     $this->getJson('/api/users')->assertStatus(200);
 
-    // Manager
     $this->actingAs($manager);
     $this->getJson('/api/users')->assertStatus(200);
 
-    // User
     $this->actingAs($user);
     $this->getJson('/api/users')->assertStatus(403);
 });
@@ -140,4 +132,66 @@ test('user can update their own name', function () {
         ]);
 
     expect($user->fresh()->name)->toBe('Updated Name');
+});
+
+test('user can update their own email', function () {
+    $user = User::factory()->create();
+
+    $new_email = fake()->safeEmail();
+
+    $user->assignRole(UserRole::USER);
+
+    $this->actingAs($user);
+
+    $response = $this->postJson('/api/user/update', [
+        'email' => $new_email
+    ]);
+
+    $response->assertStatus(200)
+        ->assertJsonFragment([
+            'name' => $user->name,
+            'email' => $new_email
+        ]);
+
+    expect($user->fresh()->email)->toBe($new_email);
+});
+
+test('user can update their own password', function () {
+    $user = User::factory()->create();
+
+    $new_password = 'Password@123';
+
+    $user->assignRole(UserRole::USER);
+
+    $this->actingAs($user);
+
+    $response = $this->postJson('/api/user/update', [
+        'password' => $new_password,
+        'password_confirmation' => $new_password
+    ]);
+
+    $response->assertStatus(200)
+        ->assertJsonFragment([
+            'name' => $user->name,
+            'email' => $user->email
+        ]);
+
+
+    expect(Hash::check($new_password, $user->fresh()->password))->toBe(true);
+});
+
+test('user cannot update email with existing email', function () {
+    $user1 = User::factory()->create([]);
+    $user2 = User::factory()->create([]);
+
+     $user1->assignRole(UserRole::USER);
+     $user2->assignRole(UserRole::USER);
+
+     $this->actingAs($user1);
+
+     $response = $this->postJson('api/user/update', [
+        'email'=> $user2->email
+     ]);
+
+     $response->assertStatus(422);
 });

@@ -1,5 +1,9 @@
 <?php
 
+use Database\Seeders\RoleSeeder;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
 /*
 |--------------------------------------------------------------------------
 | Test Case
@@ -12,7 +16,10 @@
 */
 
 pest()->extend(Tests\TestCase::class)
- // ->use(Illuminate\Foundation\Testing\RefreshDatabase::class)
+    ->beforeEach(function () {
+        Artisan::call('db:seed', ['--class' => 'RoleSeeder']);
+    })
+    ->use(RefreshDatabase::class)
     ->in('Feature');
 
 /*
@@ -45,3 +52,4 @@ function something()
 {
     // ..
 }
+
