@@ -194,3 +194,22 @@ test('user cannot update email with existing email', function () {
 
     $response->assertStatus(422);
 });
+
+test('user cannot update password into an invalid password', function () {
+    $user = User::factory()->create([]);
+    $user->assignRole(UserRole::USER);
+
+    $invalidPasswords = ['password@123', 'Password123', 'Password@', 'Pass@1'];
+
+    foreach ($invalidPasswords as $invalidPassword) {
+        $response = $this->postJson('api/user/update', [
+            'password' => $invalidPassword,
+            'password_confirmation' => $invalidPassword,
+        ]);
+
+        $response->assertStatus(401);
+    }
+
+    $this->expect($user->fresh()->password)->toBe($user->password);
+
+});
