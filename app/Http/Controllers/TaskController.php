@@ -6,10 +6,13 @@ use App\Enums\UserRole;
 use App\Http\Requests\TaskFilterRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
+use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Knuckles\Scribe\Attributes\Authenticated;
 use Knuckles\Scribe\Attributes\Group;
 use Knuckles\Scribe\Attributes\ResponseFromApiResource;
+use Knuckles\Scribe\Attributes\UrlParam;
 
 #[Group('Tasks'), Authenticated]
 
@@ -36,14 +39,9 @@ class TaskController extends Controller
 
         $query = Task::query();
 
-        $perPage = $request->validated('per_page', 10);
+        $query = $this->limitVisibility($user, $query);
 
-        // Limit visibility for users
-        if ($user->hasRole(UserRole::USER)) {
-            $query->whereHas('assignees', function ($q) use ($user) {
-                $q->where('user_id', $user->id);
-            });
-        }
+        $perPage = $request->validated('per_page', 10);
 
         // Apply filters
         if ($request->filled('status')) {
@@ -76,5 +74,46 @@ class TaskController extends Controller
         $tasks = $query->paginate($perPage);
 
         return TaskResource::collection($tasks);
+    }
+
+    /**
+     * Get Task
+     *
+     * Get a single task details using the task id
+     *
+     * Access Level: Admin , Manager , User(if assigned)
+     */
+    #[ResponseFromApiResource(TaskResource::class, Task::class, collection: false, ), UrlParam(name: 'id', type: 'int', description: 'The desired task id')]
+    public function show(Request $request, int $id): TaskResource
+    {
+
+        $user = $request->user();
+        $query = Task::query();
+
+        $task = $this->limitVisibility($user, $query)->where('id', $id)->first();
+
+        if (! $task) {
+            abort(404, 'Task not found!');
+        }
+
+        return new TaskResource($task);
+    }
+
+    /**
+     * Limit Visibility
+     *
+     * private function used to limit the visibility of the tasks
+     *
+     * @hideFromAPIDocumentation
+     */
+    private function limitVisibility(User $user, $query)
+    {
+        if ($user->hasRole(UserRole::USER)) {
+            $query->whereHas('assignees', function ($q) use ($user) {
+                $q->where('user_id', $user->id);
+            });
+        }
+
+        return $query;
     }
 }

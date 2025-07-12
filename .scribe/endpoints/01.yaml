@@ -118,7 +118,57 @@ endpoints:
     responses:
       -
         status: 200
-        content: '[{"id":369,"title":"Animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":930,"assignees":[],"depends_on":[],"due_date":"2025-07-20T23:43:46.000000Z","created_at":"2025-07-12T14:00:07.000000Z","updated_at":"2025-07-12T14:00:07.000000Z","is_owner":false},{"id":370,"title":"Tempora ex voluptatem laboriosam praesentium quis.","description":"Fugit deleniti distinctio eum doloremque id aut libero. Veniam corporis dolorem mollitia. Nemo odit quia officia est dignissimos. Blanditiis odio veritatis excepturi doloribus delectus fugit.","status":"pending","owner_name":"Mr. Nelson Little MD","owner_id":931,"assignees":[],"depends_on":[],"due_date":"2025-07-28T12:58:17.000000Z","created_at":"2025-07-12T14:00:07.000000Z","updated_at":"2025-07-12T14:00:07.000000Z","is_owner":false}]'
+        content: '[{"id":374,"title":"Animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":951,"assignees":[],"depends_on":[],"due_date":"2025-07-21T00:53:36.000000Z","created_at":"2025-07-12T15:09:57.000000Z","updated_at":"2025-07-12T15:09:57.000000Z","is_owner":false},{"id":375,"title":"Tempora ex voluptatem laboriosam praesentium quis.","description":"Fugit deleniti distinctio eum doloremque id aut libero. Veniam corporis dolorem mollitia. Nemo odit quia officia est dignissimos. Blanditiis odio veritatis excepturi doloribus delectus fugit.","status":"pending","owner_name":"Mr. Nelson Little MD","owner_id":952,"assignees":[],"depends_on":[],"due_date":"2025-07-28T14:08:07.000000Z","created_at":"2025-07-12T15:09:57.000000Z","updated_at":"2025-07-12T15:09:57.000000Z","is_owner":false}]'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - GET
+    uri: 'api/tasks/{id}'
+    metadata:
+      groupName: Tasks
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Get Task'
+      description: |-
+        Get a single task details using the task id
+
+        Access Level: Admin , Manager , User(if assigned)
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The desired task id'
+        required: true
+        example: 16
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 16
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters: []
+    cleanBodyParameters: []
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":376,"title":"Et animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":953,"assignees":[],"depends_on":[],"due_date":"2025-07-21T00:53:36.000000Z","created_at":"2025-07-12T15:09:57.000000Z","updated_at":"2025-07-12T15:09:57.000000Z","is_owner":false}'
         headers: []
         description: ''
         custom: []

@@ -74,6 +74,9 @@
                                                     <li class="tocify-item level-2" data-unique="tasks-GETapi-tasks">
                                 <a href="#tasks-GETapi-tasks">Get Tasks</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="tasks-GETapi-tasks--id-">
+                                <a href="#tasks-GETapi-tasks--id-">Get Task</a>
+                            </li>
                                                                         </ul>
                             </ul>
                     <ul id="tocify-header-user-auth" class="tocify-header">
@@ -224,31 +227,31 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;id&quot;: 369,
+        &quot;id&quot;: 374,
         &quot;title&quot;: &quot;Animi quos velit et fugiat.&quot;,
         &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
         &quot;status&quot;: &quot;in_progress&quot;,
         &quot;owner_name&quot;: &quot;Carey Smitham&quot;,
-        &quot;owner_id&quot;: 930,
+        &quot;owner_id&quot;: 951,
         &quot;assignees&quot;: [],
         &quot;depends_on&quot;: [],
-        &quot;due_date&quot;: &quot;2025-07-20T23:43:46.000000Z&quot;,
-        &quot;created_at&quot;: &quot;2025-07-12T14:00:07.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-07-12T14:00:07.000000Z&quot;,
+        &quot;due_date&quot;: &quot;2025-07-21T00:53:36.000000Z&quot;,
+        &quot;created_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
         &quot;is_owner&quot;: false
     },
     {
-        &quot;id&quot;: 370,
+        &quot;id&quot;: 375,
         &quot;title&quot;: &quot;Tempora ex voluptatem laboriosam praesentium quis.&quot;,
         &quot;description&quot;: &quot;Fugit deleniti distinctio eum doloremque id aut libero. Veniam corporis dolorem mollitia. Nemo odit quia officia est dignissimos. Blanditiis odio veritatis excepturi doloribus delectus fugit.&quot;,
         &quot;status&quot;: &quot;pending&quot;,
         &quot;owner_name&quot;: &quot;Mr. Nelson Little MD&quot;,
-        &quot;owner_id&quot;: 931,
+        &quot;owner_id&quot;: 952,
         &quot;assignees&quot;: [],
         &quot;depends_on&quot;: [],
-        &quot;due_date&quot;: &quot;2025-07-28T12:58:17.000000Z&quot;,
-        &quot;created_at&quot;: &quot;2025-07-12T14:00:07.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-07-12T14:00:07.000000Z&quot;,
+        &quot;due_date&quot;: &quot;2025-07-28T14:08:07.000000Z&quot;,
+        &quot;created_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
         &quot;is_owner&quot;: false
     }
 ]</code>
@@ -405,6 +408,148 @@ Must be one of:
         </div>
         </form>
 
+                    <h2 id="tasks-GETapi-tasks--id-">Get Task</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>Get a single task details using the task id</p>
+<p>Access Level: Admin , Manager , User(if assigned)</p>
+
+<span id="example-requests-GETapi-tasks--id-">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request GET \
+    --get "http://localhost:8000/api/tasks/16" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json"</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/tasks/16"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+fetch(url, {
+    method: "GET",
+    headers,
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-GETapi-tasks--id-">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;id&quot;: 376,
+    &quot;title&quot;: &quot;Et animi quos velit et fugiat.&quot;,
+    &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
+    &quot;status&quot;: &quot;in_progress&quot;,
+    &quot;owner_name&quot;: &quot;Carey Smitham&quot;,
+    &quot;owner_id&quot;: 953,
+    &quot;assignees&quot;: [],
+    &quot;depends_on&quot;: [],
+    &quot;due_date&quot;: &quot;2025-07-21T00:53:36.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-12T15:09:57.000000Z&quot;,
+    &quot;is_owner&quot;: false
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-GETapi-tasks--id-" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-GETapi-tasks--id-"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-GETapi-tasks--id-"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-GETapi-tasks--id-" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-GETapi-tasks--id-">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-GETapi-tasks--id-" data-method="GET"
+      data-path="api/tasks/{id}"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('GETapi-tasks--id-', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-GETapi-tasks--id-"
+                    onclick="tryItOut('GETapi-tasks--id-');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-GETapi-tasks--id-"
+                    onclick="cancelTryOut('GETapi-tasks--id-');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-GETapi-tasks--id-"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-green">GET</small>
+            <b><code>api/tasks/{id}</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="GETapi-tasks--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="GETapi-tasks--id-"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="GETapi-tasks--id-"
+               value="16"
+               data-component="url">
+    <br>
+<p>The desired task id Example: <code>16</code></p>
+            </div>
+                    </form>
+
                 <h1 id="user-auth">User Auth</h1>
 
     
@@ -467,7 +612,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 922,
+    &quot;id&quot;: 943,
     &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
     &quot;email&quot;: &quot;gulgowski.asia@example.com&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -645,7 +790,7 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;id&quot;: 923,
+        &quot;id&quot;: 944,
         &quot;name&quot;: &quot;Mrs. Justina Gaylord&quot;,
         &quot;email&quot;: &quot;lafayette.considine@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
@@ -911,7 +1056,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 924,
+    &quot;id&quot;: 945,
     &quot;name&quot;: &quot;Mr. Adriel Romaguera&quot;,
     &quot;email&quot;: &quot;antonio24@example.net&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -1047,7 +1192,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 925,
+    &quot;id&quot;: 946,
     &quot;name&quot;: &quot;Mina Bauch&quot;,
     &quot;email&quot;: &quot;okeefe.isidro@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -1225,7 +1370,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 926,
+    &quot;id&quot;: 947,
     &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
     &quot;email&quot;: &quot;idickens@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -1373,13 +1518,13 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;id&quot;: 927,
+        &quot;id&quot;: 948,
         &quot;name&quot;: &quot;Mya DuBuque&quot;,
         &quot;email&quot;: &quot;breitenberg.gilbert@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
     },
     {
-        &quot;id&quot;: 928,
+        &quot;id&quot;: 949,
         &quot;name&quot;: &quot;Morgan Hirthe&quot;,
         &quot;email&quot;: &quot;dare.emelie@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
@@ -1502,7 +1647,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 929,
+    &quot;id&quot;: 950,
     &quot;name&quot;: &quot;Prof. Mina Bauch&quot;,
     &quot;email&quot;: &quot;ztromp@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;
