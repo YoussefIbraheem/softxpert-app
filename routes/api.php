@@ -28,11 +28,10 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/{id}', [UserController::class, 'getUser'])->name('users.getUser');
         });
 
-        Route::post('/tasks/create', [TaskController::class, 'store'])->name('tasks.createTask');
-
+        Route::post('/tasks/create', [TaskController::class, 'store'])->name('tasks.create');
     });
 
     Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.getTasks');
-    Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.getTaskById');
-
+    Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.getById');
+    Route::post('/tasks/{id}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.changeStatus');
 });

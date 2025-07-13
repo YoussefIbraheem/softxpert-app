@@ -41,7 +41,9 @@ beforeEach(function () {
 
         'assignees',
 
-        'depends_on',
+        'dependents_links',
+
+        'depends_on_links',
 
         'due_date',
         'created_at',

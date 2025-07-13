@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\TaskStatus;
 use App\Enums\UserRole;
+use App\Http\Requests\ChangeTaskStatusRequest;
 use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\TaskFilterRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Knuckles\Scribe\Attributes\Authenticated;
@@ -19,6 +23,8 @@ use Knuckles\Scribe\Attributes\UrlParam;
 
 class TaskController extends Controller
 {
+    use AuthorizesRequests;
+
     /**
      * Get Tasks
      *
@@ -30,6 +36,20 @@ class TaskController extends Controller
      * - `owner_id`: filter by owner
      * - `assignee_id`: filter by assigned user
      * - `due_date_from`, `due_date_to`: filter by due date range
+     *
+     * - Example of properties:
+     *     - "depends_on_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
+     *
+     *
+     *     - "dependents_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
      *
      * Access Level: user (own tasks), manager, admin (all)
      */
@@ -83,6 +103,19 @@ class TaskController extends Controller
      * Get a single task details using the task id
      *
      * Access Level: Admin , Manager , User(if assigned)
+     * - Example of properties:
+     *     - "depends_on_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
+     *
+     *
+     *     - "dependents_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
      */
     #[ResponseFromApiResource(TaskResource::class, Task::class, collection: false, ), UrlParam(name: 'id', type: 'int', description: 'The desired task id')]
     public function show(Request $request, int $id): TaskResource
@@ -99,6 +132,7 @@ class TaskController extends Controller
 
         return new TaskResource($task);
     }
+
     /**
      * Create New Task
      *
@@ -106,6 +140,19 @@ class TaskController extends Controller
      * - user cannot be entered twice.
      * - Default status (Pending)
      * - Access Level: Admin , Manager
+     * - Example of properties:
+     *     - "depends_on_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
+     *
+     *
+     *     - "dependents_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
      */
     #[ResponseFromApiResource(TaskResource::class, Task::class, collection: false, )]
     public function store(CreateTaskRequest $request): TaskResource
@@ -139,13 +186,56 @@ class TaskController extends Controller
     }
 
     /**
+     * Change Task Status
+     *
+     * update the task status to --> (Pending , In Progress , Completed , Cancelled)
+     * setting the task to cancelled is only limited to manager access level
+     *
+     * - Example of properties:
+     *   -  "depends_on_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
+     *
+     *
+     *    - "dependents_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
+     */
+    #[ResponseFromApiResource(TaskResource::class, Task::class, collection: false, )]
+    public function changeStatus(ChangeTaskStatusRequest $request, $id): TaskResource
+    {
+        $data = $request->validated();
+
+        $task = Task::with(['dependencies', 'dependents'])->findorFail($id);
+
+        $this->authorize('update', $task);
+
+        $is_user = $request->user()->hasRole(UserRole::USER);
+        $unclosed_dependents = $this->checkDependents($task);
+
+        if ($is_user && $unclosed_dependents) {
+            abort(422, 'Action cannot be taken, please check for unclosed dependent tasks');
+        }
+
+        $task->update([
+            'status' => $data['status'],
+        ]);
+
+        return new TaskResource($task);
+    }
+
+    /**
      * Limit Visibility
      *
      * private function used to limit the visibility of the tasks for users
      *
      * @hideFromAPIDocumentation
      */
-    private function limitUserVisibility(User $user, $query)
+    private function limitUserVisibility(User $user, $query): Builder
     {
         if ($user->hasRole(UserRole::USER)) {
             $query->whereHas('assignees', function ($q) use ($user) {
@@ -154,5 +244,30 @@ class TaskController extends Controller
         }
 
         return $query;
+    }
+
+    /**
+     * Check Dependent Tasks Status
+     *
+     * private function used to check for unclosed tasks
+     *
+     *
+     * @hideFromAPIDocumentation
+     */
+    private function checkDependents(Task $task): bool
+    {
+        $dependents = $task->dependents()->get();
+
+        if ($dependents->count() == 0) {
+            return false;
+        }
+
+        foreach ($dependents as $dependent) {
+            if ($dependent->status == TaskStatus::PENDING || $dependent->status == TaskStatus::IN_PROGRESS) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }

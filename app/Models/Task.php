@@ -28,6 +28,9 @@ class Task extends Model
     ];
 
     /**
+     * The user who owns/created the task.
+     * Typically a manager or admin.
+     *
      * @return BelongsTo<User,$this>
      */
     public function owner(): BelongsTo
@@ -36,6 +39,8 @@ class Task extends Model
     }
 
     /**
+     * The users assigned to work on this task.
+     *
      * @return BelongsToMany<User,$this>
      */
     public function assignees(): BelongsToMany
@@ -44,6 +49,8 @@ class Task extends Model
     }
 
     /**
+     * The tasks that *this task depends on* — in other words, its "parent tasks".
+     *
      * @return BelongsToMany<Task,$this,Pivot>
      */
     public function dependencies(): BelongsToMany
@@ -52,6 +59,8 @@ class Task extends Model
     }
 
     /**
+     * The tasks that *depend on this task* — i.e., its "child tasks".
+     *
      * @return BelongsToMany<Task,$this,Pivot>
      */
     public function dependents(): BelongsToMany

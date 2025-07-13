@@ -80,6 +80,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="tasks-GETapi-tasks--id-">
                                 <a href="#tasks-GETapi-tasks--id-">Get Task</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="tasks-POSTapi-tasks--id--change-status">
+                                <a href="#tasks-POSTapi-tasks--id--change-status">Change Task Status</a>
+                            </li>
                                                                         </ul>
                             </ul>
                     <ul id="tocify-header-user-auth" class="tocify-header">
@@ -122,7 +125,7 @@
     </ul>
 
     <ul class="toc-footer" id="last-updated">
-        <li>Last updated: July 12, 2025</li>
+        <li>Last updated: July 13, 2025</li>
     </ul>
 </div>
 
@@ -167,6 +170,25 @@ You can switch the language used with the tabs at the top right (or from the nav
 <li>user cannot be entered twice.</li>
 <li>Default status (Pending)</li>
 <li>Access Level: Admin , Manager</li>
+<li>
+<p>Example of properties:</p>
+<ul>
+<li>
+<p>&quot;depends_on_links&quot;: [
+&quot;id&quot;: 8,
+&quot;title&quot;: &quot;Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.&quot;,
+&quot;link&quot;: &quot;<a href="http://localhost:8000/api/tasks/8">http://localhost:8000/api/tasks/8</a>&quot;
+],</p>
+</li>
+<li>
+<p>&quot;dependents_links&quot;: [
+&quot;id&quot;: 8,
+&quot;title&quot;: &quot;Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.&quot;,
+&quot;link&quot;: &quot;<a href="http://localhost:8000/api/tasks/8">http://localhost:8000/api/tasks/8</a>&quot;
+],</p>
+</li>
+</ul>
+</li>
 </ul>
 
 <span id="example-requests-POSTapi-tasks-create">
@@ -184,7 +206,7 @@ You can switch the language used with the tabs at the top right (or from the nav
     \"assignees_ids\": [
         16
     ],
-    \"due_date\": \"2051-08-05\"
+    \"due_date\": \"2051-08-06\"
 }"
 </code></pre></div>
 
@@ -205,7 +227,7 @@ let body = {
     "assignees_ids": [
         16
     ],
-    "due_date": "2051-08-05"
+    "due_date": "2051-08-06"
 };
 
 fetch(url, {
@@ -223,17 +245,18 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 21,
+    &quot;id&quot;: 104,
     &quot;title&quot;: &quot;Et animi quos velit et fugiat.&quot;,
     &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
     &quot;status&quot;: &quot;in_progress&quot;,
     &quot;owner_name&quot;: &quot;Carey Smitham&quot;,
-    &quot;owner_id&quot;: 21,
+    &quot;owner_id&quot;: 188,
     &quot;assignees&quot;: [],
-    &quot;depends_on&quot;: [],
-    &quot;due_date&quot;: &quot;2025-07-21T04:19:38.000000Z&quot;,
-    &quot;created_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
-    &quot;updated_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
+    &quot;depends_on_links&quot;: [],
+    &quot;dependents_links&quot;: [],
+    &quot;due_date&quot;: &quot;2025-07-21T10:10:44.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2025-07-13T00:27:05.000000Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-13T00:27:05.000000Z&quot;,
     &quot;is_owner&quot;: false
 }</code>
  </pre>
@@ -349,10 +372,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="due_date"                data-endpoint="POSTapi-tasks-create"
-               value="2051-08-05"
+               value="2051-08-06"
                data-component="body">
     <br>
-<p>Must be a valid date. Must be a valid date in the format <code>Y-m-d H:i:s</code>. Must be a date after or equal to <code>today</code>. Example: <code>2051-08-05</code></p>
+<p>Must be a valid date. Must be a valid date in the format <code>Y-m-d H:i:s</code>. Must be a date after or equal to <code>today</code>. Example: <code>2051-08-06</code></p>
         </div>
         </form>
 
@@ -365,11 +388,40 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <p>Retrieve tasks with optional filters.</p>
 <p>Filters:</p>
 <ul>
-<li><code>status</code>: pending, in_progress, completed, cancelled</li>
-<li><code>title</code>: partial match</li>
-<li><code>owner_id</code>: filter by owner</li>
-<li><code>assignee_id</code>: filter by assigned user</li>
-<li><code>due_date_from</code>, <code>due_date_to</code>: filter by due date range</li>
+<li>
+<p><code>status</code>: pending, in_progress, completed, cancelled</p>
+</li>
+<li>
+<p><code>title</code>: partial match</p>
+</li>
+<li>
+<p><code>owner_id</code>: filter by owner</p>
+</li>
+<li>
+<p><code>assignee_id</code>: filter by assigned user</p>
+</li>
+<li>
+<p><code>due_date_from</code>, <code>due_date_to</code>: filter by due date range</p>
+</li>
+<li>
+<p>Example of properties:</p>
+<ul>
+<li>
+<p>&quot;depends_on_links&quot;: [
+&quot;id&quot;: 8,
+&quot;title&quot;: &quot;Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.&quot;,
+&quot;link&quot;: &quot;<a href="http://localhost:8000/api/tasks/8">http://localhost:8000/api/tasks/8</a>&quot;
+],</p>
+</li>
+<li>
+<p>&quot;dependents_links&quot;: [
+&quot;id&quot;: 8,
+&quot;title&quot;: &quot;Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.&quot;,
+&quot;link&quot;: &quot;<a href="http://localhost:8000/api/tasks/8">http://localhost:8000/api/tasks/8</a>&quot;
+],</p>
+</li>
+</ul>
+</li>
 </ul>
 <p>Access Level: user (own tasks), manager, admin (all)</p>
 
@@ -388,7 +440,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     \"owner_id\": 16,
     \"assignee_id\": 16,
     \"due_date_from\": \"2021-08-05\",
-    \"due_date_to\": \"2051-08-05\",
+    \"due_date_to\": \"2051-08-06\",
     \"per_page\": 22
 }"
 </code></pre></div>
@@ -410,7 +462,7 @@ let body = {
     "owner_id": 16,
     "assignee_id": 16,
     "due_date_from": "2021-08-05",
-    "due_date_to": "2051-08-05",
+    "due_date_to": "2051-08-06",
     "per_page": 22
 };
 
@@ -430,31 +482,33 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;id&quot;: 22,
+        &quot;id&quot;: 105,
         &quot;title&quot;: &quot;Animi quos velit et fugiat.&quot;,
         &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
         &quot;status&quot;: &quot;in_progress&quot;,
         &quot;owner_name&quot;: &quot;Carey Smitham&quot;,
-        &quot;owner_id&quot;: 22,
+        &quot;owner_id&quot;: 189,
         &quot;assignees&quot;: [],
-        &quot;depends_on&quot;: [],
-        &quot;due_date&quot;: &quot;2025-07-21T04:19:38.000000Z&quot;,
-        &quot;created_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
+        &quot;depends_on_links&quot;: [],
+        &quot;dependents_links&quot;: [],
+        &quot;due_date&quot;: &quot;2025-07-21T10:10:44.000000Z&quot;,
+        &quot;created_at&quot;: &quot;2025-07-13T00:27:05.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2025-07-13T00:27:05.000000Z&quot;,
         &quot;is_owner&quot;: false
     },
     {
-        &quot;id&quot;: 23,
+        &quot;id&quot;: 106,
         &quot;title&quot;: &quot;Praesentium quis adipisci molestias fugit.&quot;,
         &quot;description&quot;: &quot;Eum doloremque id aut libero aliquam veniam corporis. Mollitia deleniti nemo odit quia officia. Dignissimos neque blanditiis odio. Excepturi doloribus delectus fugit qui repudiandae laboriosam. Alias tenetur ratione nemo voluptate accusamus ut et.&quot;,
         &quot;status&quot;: &quot;in_progress&quot;,
         &quot;owner_name&quot;: &quot;Graham Crist V&quot;,
-        &quot;owner_id&quot;: 23,
+        &quot;owner_id&quot;: 190,
         &quot;assignees&quot;: [],
-        &quot;depends_on&quot;: [],
-        &quot;due_date&quot;: &quot;2025-07-21T18:06:21.000000Z&quot;,
-        &quot;created_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
+        &quot;depends_on_links&quot;: [],
+        &quot;dependents_links&quot;: [],
+        &quot;due_date&quot;: &quot;2025-07-21T23:57:27.000000Z&quot;,
+        &quot;created_at&quot;: &quot;2025-07-13T00:27:05.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2025-07-13T00:27:05.000000Z&quot;,
         &quot;is_owner&quot;: false
     }
 ]</code>
@@ -593,10 +647,10 @@ Must be one of:
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="due_date_to"                data-endpoint="GETapi-tasks"
-               value="2051-08-05"
+               value="2051-08-06"
                data-component="body">
     <br>
-<p>Must be a valid date. Must be a date after or equal to <code>due_date_from</code>. Example: <code>2051-08-05</code></p>
+<p>Must be a valid date. Must be a date after or equal to <code>due_date_from</code>. Example: <code>2051-08-06</code></p>
         </div>
                 <div style=" padding-left: 28px;  clear: unset;">
             <b style="line-height: 2;"><code>per_page</code></b>&nbsp;&nbsp;
@@ -619,6 +673,27 @@ Must be one of:
 
 <p>Get a single task details using the task id</p>
 <p>Access Level: Admin , Manager , User(if assigned)</p>
+<ul>
+<li>
+<p>Example of properties:</p>
+<ul>
+<li>
+<p>&quot;depends_on_links&quot;: [
+&quot;id&quot;: 8,
+&quot;title&quot;: &quot;Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.&quot;,
+&quot;link&quot;: &quot;<a href="http://localhost:8000/api/tasks/8">http://localhost:8000/api/tasks/8</a>&quot;
+],</p>
+</li>
+<li>
+<p>&quot;dependents_links&quot;: [
+&quot;id&quot;: 8,
+&quot;title&quot;: &quot;Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.&quot;,
+&quot;link&quot;: &quot;<a href="http://localhost:8000/api/tasks/8">http://localhost:8000/api/tasks/8</a>&quot;
+],</p>
+</li>
+</ul>
+</li>
+</ul>
 
 <span id="example-requests-GETapi-tasks--id-">
 <blockquote>Example request:</blockquote>
@@ -655,17 +730,18 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 24,
+    &quot;id&quot;: 107,
     &quot;title&quot;: &quot;Et animi quos velit et fugiat.&quot;,
     &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
     &quot;status&quot;: &quot;in_progress&quot;,
     &quot;owner_name&quot;: &quot;Carey Smitham&quot;,
-    &quot;owner_id&quot;: 24,
+    &quot;owner_id&quot;: 191,
     &quot;assignees&quot;: [],
-    &quot;depends_on&quot;: [],
-    &quot;due_date&quot;: &quot;2025-07-21T04:19:38.000000Z&quot;,
-    &quot;created_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
-    &quot;updated_at&quot;: &quot;2025-07-12T18:35:59.000000Z&quot;,
+    &quot;depends_on_links&quot;: [],
+    &quot;dependents_links&quot;: [],
+    &quot;due_date&quot;: &quot;2025-07-21T10:10:44.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2025-07-13T00:27:05.000000Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-13T00:27:05.000000Z&quot;,
     &quot;is_owner&quot;: false
 }</code>
  </pre>
@@ -753,6 +829,193 @@ You can check the Dev Tools console for debugging information.</code></pre>
             </div>
                     </form>
 
+                    <h2 id="tasks-POSTapi-tasks--id--change-status">Change Task Status</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<p>update the task status to --&gt; (Pending , In Progress , Completed , Cancelled)
+setting the task to cancelled is only limited to manager access level</p>
+<ul>
+<li>
+<p>Example of properties:</p>
+<ul>
+<li>
+<p>&quot;depends_on_links&quot;: [
+&quot;id&quot;: 8,
+&quot;title&quot;: &quot;Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.&quot;,
+&quot;link&quot;: &quot;<a href="http://localhost:8000/api/tasks/8">http://localhost:8000/api/tasks/8</a>&quot;
+],</p>
+</li>
+<li>
+<p>&quot;dependents_links&quot;: [
+&quot;id&quot;: 8,
+&quot;title&quot;: &quot;Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.&quot;,
+&quot;link&quot;: &quot;<a href="http://localhost:8000/api/tasks/8">http://localhost:8000/api/tasks/8</a>&quot;
+],</p>
+</li>
+</ul>
+</li>
+</ul>
+
+<span id="example-requests-POSTapi-tasks--id--change-status">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8000/api/tasks/1/change-status" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"status\": \"cancelled\"
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/tasks/1/change-status"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "status": "cancelled"
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-tasks--id--change-status">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;id&quot;: 108,
+    &quot;title&quot;: &quot;Fugit deleniti distinctio eum doloremque id aut libero.&quot;,
+    &quot;description&quot;: &quot;Corporis dolorem mollitia deleniti nemo odit quia officia. Dignissimos neque blanditiis odio.&quot;,
+    &quot;status&quot;: &quot;in_progress&quot;,
+    &quot;owner_name&quot;: &quot;Eileen Schmidt&quot;,
+    &quot;owner_id&quot;: 192,
+    &quot;assignees&quot;: [],
+    &quot;depends_on_links&quot;: [],
+    &quot;dependents_links&quot;: [],
+    &quot;due_date&quot;: &quot;2025-08-06T07:07:53.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2025-07-13T00:27:05.000000Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-13T00:27:05.000000Z&quot;,
+    &quot;is_owner&quot;: false
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-tasks--id--change-status" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-tasks--id--change-status"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-tasks--id--change-status"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-tasks--id--change-status" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-tasks--id--change-status">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-tasks--id--change-status" data-method="POST"
+      data-path="api/tasks/{id}/change-status"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-tasks--id--change-status', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-tasks--id--change-status"
+                    onclick="tryItOut('POSTapi-tasks--id--change-status');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-tasks--id--change-status"
+                    onclick="cancelTryOut('POSTapi-tasks--id--change-status');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-tasks--id--change-status"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/tasks/{id}/change-status</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-tasks--id--change-status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-tasks--id--change-status"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="POSTapi-tasks--id--change-status"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the task. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>status</code></b>&nbsp;&nbsp;
+<small>string</small>&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="status"                data-endpoint="POSTapi-tasks--id--change-status"
+               value="cancelled"
+               data-component="body">
+    <br>
+<p>Example: <code>cancelled</code></p>
+Must be one of:
+<ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>in_progress</code></li> <li><code>completed</code></li> <li><code>cancelled</code></li></ul>
+        </div>
+        </form>
+
                 <h1 id="user-auth">User Auth</h1>
 
     
@@ -815,7 +1078,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 13,
+    &quot;id&quot;: 180,
     &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
     &quot;email&quot;: &quot;gulgowski.asia@example.com&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -993,7 +1256,7 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;id&quot;: 14,
+        &quot;id&quot;: 181,
         &quot;name&quot;: &quot;Mrs. Justina Gaylord&quot;,
         &quot;email&quot;: &quot;lafayette.considine@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
@@ -1259,7 +1522,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 15,
+    &quot;id&quot;: 182,
     &quot;name&quot;: &quot;Mr. Adriel Romaguera&quot;,
     &quot;email&quot;: &quot;antonio24@example.net&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -1395,7 +1658,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 16,
+    &quot;id&quot;: 183,
     &quot;name&quot;: &quot;Mina Bauch&quot;,
     &quot;email&quot;: &quot;okeefe.isidro@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -1537,7 +1800,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"role_name\": \"manager\",
+    \"role_name\": \"user\",
     \"user_id\": 16
 }"
 </code></pre></div>
@@ -1554,7 +1817,7 @@ const headers = {
 };
 
 let body = {
-    "role_name": "manager",
+    "role_name": "user",
     "user_id": 16
 };
 
@@ -1573,7 +1836,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 17,
+    &quot;id&quot;: 184,
     &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
     &quot;email&quot;: &quot;idickens@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -1656,10 +1919,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="role_name"                data-endpoint="POSTapi-change-role"
-               value="manager"
+               value="user"
                data-component="body">
     <br>
-<p>Example: <code>manager</code></p>
+<p>Example: <code>user</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>manager</code></li> <li><code>user</code></li></ul>
         </div>
@@ -1721,13 +1984,13 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;id&quot;: 18,
+        &quot;id&quot;: 185,
         &quot;name&quot;: &quot;Mya DuBuque&quot;,
         &quot;email&quot;: &quot;breitenberg.gilbert@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
     },
     {
-        &quot;id&quot;: 19,
+        &quot;id&quot;: 186,
         &quot;name&quot;: &quot;Morgan Hirthe&quot;,
         &quot;email&quot;: &quot;dare.emelie@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
@@ -1850,7 +2113,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 20,
+    &quot;id&quot;: 187,
     &quot;name&quot;: &quot;Prof. Mina Bauch&quot;,
     &quot;email&quot;: &quot;ztromp@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;

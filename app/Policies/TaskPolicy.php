@@ -48,7 +48,7 @@ class TaskPolicy
             $onlyStatus = request()->only('status');
 
             if (count(request()->all()) === 1 && isset($onlyStatus['status'])) {
-                return in_array($onlyStatus['status'], ['pending', 'in_progress', 'complete']);
+                return in_array($onlyStatus['status'], ['pending', 'in_progress', 'completed']);
             }
         }
 

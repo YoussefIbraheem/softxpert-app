@@ -29,7 +29,19 @@ class TaskResource extends JsonResource
 
             'assignees' => $this->assignees ? UserResource::collection($this->assignees) : [],
 
-            'depends_on' => $this->dependencies ? TaskResource::collection($this->dependencies) : [],
+            'depends_on_links' => $this->dependencies ? $this->dependencies->map(fn ($dependencies) => [
+                'id' => $dependencies->id,
+                'title' => $dependencies->title,
+                'link' => route('tasks.getById', $dependencies->id),
+            ]) : [],
+
+            'dependents_links' => $this->dependents ? $this->dependents->map(
+                fn ($dependent) => [
+                    'id' => $dependent->id,
+                    'title' => $dependent->title,
+                    'link' => route('tasks.getById', $dependent->id),
+                ]
+            ) : [], // link to the parent task to be handled
 
             'due_date' => $this->due_date,
             'created_at' => $this->created_at,

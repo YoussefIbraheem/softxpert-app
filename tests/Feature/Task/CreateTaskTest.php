@@ -28,7 +28,9 @@ beforeEach(function () {
 
         'assignees',
 
-        'depends_on',
+        'dependents_links',
+
+        'depends_on_links',
 
         'due_date',
         'created_at',
@@ -59,7 +61,6 @@ test('admin can create task', function () {
     $this->assertDatabaseHas('tasks', ['due_date' => Carbon::parse($newTaskData['due_date'])->format('Y-m-d H:i:s')]);
     $this->assertDatabaseHas('task_user', ['user_id' => $this->user1->id, 'task_id' => $newTaskData['id']]);
     $this->assertDatabaseHas('task_user', ['user_id' => $this->user2->id, 'task_id' => $newTaskData['id']]);
-
 });
 
 test('manager can create task', function () {
@@ -83,7 +84,6 @@ test('manager can create task', function () {
     $this->assertDatabaseHas('tasks', ['due_date' => Carbon::parse($newTaskData['due_date'])->format('Y-m-d H:i:s')]);
     $this->assertDatabaseHas('task_user', ['user_id' => $this->user1->id, 'task_id' => $newTaskData['id']]);
     $this->assertDatabaseHas('task_user', ['user_id' => $this->user2->id, 'task_id' => $newTaskData['id']]);
-
 });
 
 test('user cannot create task', function () {
@@ -97,7 +97,6 @@ test('user cannot create task', function () {
     ]);
 
     $response->assertStatus(403);
-
 });
 
 test('admin cannot enter the same user multiple times', function () {

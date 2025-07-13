@@ -11,7 +11,7 @@ class TaskFilterRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true; // This part is already protected by the role middleware
+        return true;
     }
 
     /**
