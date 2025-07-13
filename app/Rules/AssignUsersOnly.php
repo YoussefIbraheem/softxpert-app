@@ -19,7 +19,7 @@ class AssignUsersOnly implements ValidationRule
         $user = User::find($value);
 
         if (! $user) {
-            abort(404, 'Assignee Id not found!');
+            abort(422, 'Assignee Id not found!');
         }
 
         if ($user->hasAnyRole([UserRole::ADMIN, UserRole::MANAGER])) {

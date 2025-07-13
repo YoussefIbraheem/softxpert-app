@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Enums\TaskStatus;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -22,7 +23,7 @@ class TaskResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'description' => $this->description,
-            'status' => $this->status,
+            'status' => $this->status ?? TaskStatus::PENDING,
 
             'owner_name' => $this->owner->name,
             'owner_id' => $this->owner->id,

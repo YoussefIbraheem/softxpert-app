@@ -7,6 +7,7 @@ use App\Enums\UserRole;
 use App\Http\Requests\ChangeTaskStatusRequest;
 use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\TaskFilterRequest;
+use App\Http\Requests\UpdateTaskRequest;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use App\Models\User;
@@ -51,7 +52,16 @@ class TaskController extends Controller
      *           "link": "http://localhost:8000/api/tasks/8"
      *       ],
      *
-     * Access Level: user (own tasks), manager, admin (all)
+     *     - "assignees": [
+     *  {
+     *      "id": 4,
+     *      "name": "Michael Murazik III",
+     *      "email": "harber.hazle@example.com",
+     *      "role": "user"
+     *  }
+     * ],
+     *
+     * - Access Level: user (own tasks), manager, admin (all)
      */
     #[ResponseFromApiResource(TaskResource::class, Task::class, collection: true)]
     public function index(TaskFilterRequest $request): AnonymousResourceCollection
@@ -100,9 +110,8 @@ class TaskController extends Controller
     /**
      * Get Task
      *
-     * Get a single task details using the task id
+     * - Get a single task details using the task id
      *
-     * Access Level: Admin , Manager , User(if assigned)
      * - Example of properties:
      *     - "depends_on_links": [
      *           "id": 8,
@@ -116,6 +125,16 @@ class TaskController extends Controller
      *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
      *           "link": "http://localhost:8000/api/tasks/8"
      *       ],
+     *     - "assignees": [
+     *  {
+     *      "id": 4,
+     *      "name": "Michael Murazik III",
+     *      "email": "harber.hazle@example.com",
+     *      "role": "user"
+     *  }
+     * ],
+     *
+     * - Access Level: Admin , Manager , User(if assigned)
      */
     #[ResponseFromApiResource(TaskResource::class, Task::class, collection: false, ), UrlParam(name: 'id', type: 'int', description: 'The desired task id')]
     public function show(Request $request, int $id): TaskResource
@@ -139,7 +158,7 @@ class TaskController extends Controller
      * - Creates a new task with assignees (users).
      * - user cannot be entered twice.
      * - Default status (Pending)
-     * - Access Level: Admin , Manager
+     *
      * - Example of properties:
      *     - "depends_on_links": [
      *           "id": 8,
@@ -153,6 +172,17 @@ class TaskController extends Controller
      *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
      *           "link": "http://localhost:8000/api/tasks/8"
      *       ],
+     *
+     *     - "assignees": [
+     *  {
+     *      "id": 4,
+     *      "name": "Michael Murazik III",
+     *      "email": "harber.hazle@example.com",
+     *      "role": "user"
+     *  }
+     * ],
+     *
+     * - Access Level: Admin , Manager
      */
     #[ResponseFromApiResource(TaskResource::class, Task::class, collection: false, )]
     public function store(CreateTaskRequest $request): TaskResource
@@ -188,8 +218,7 @@ class TaskController extends Controller
     /**
      * Change Task Status
      *
-     * update the task status to --> (Pending , In Progress , Completed , Cancelled)
-     * setting the task to cancelled is only limited to manager access level
+     * - update the task status to --> (Pending , In Progress , Completed , Cancelled)
      *
      * - Example of properties:
      *   -  "depends_on_links": [
@@ -204,6 +233,17 @@ class TaskController extends Controller
      *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
      *           "link": "http://localhost:8000/api/tasks/8"
      *       ],
+     *    - "assignees": [
+     *  {
+     *      "id": 4,
+     *      "name": "Michael Murazik III",
+     *      "email": "harber.hazle@example.com",
+     *      "role": "user"
+     *  }
+     * ],
+     *
+     * - Access Level: N/A
+     * - **NOTE** setting the task to cancelled is only limited to manager access level
      */
     #[ResponseFromApiResource(TaskResource::class, Task::class, collection: false, )]
     public function changeStatus(ChangeTaskStatusRequest $request, $id): TaskResource
@@ -224,6 +264,53 @@ class TaskController extends Controller
         $task->update([
             'status' => $data['status'],
         ]);
+
+        return new TaskResource($task);
+    }
+
+    /**
+     * Update Task Data
+     *
+     * - update the task data (except for status and dependents located in separate endpoints)
+     *
+     * - Example of properties:
+     *   -  "depends_on_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
+     *
+     *
+     *    - "dependents_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
+     *    - "assignees": [
+     *  {
+     *      "id": 4,
+     *      "name": "Michael Murazik III",
+     *      "email": "harber.hazle@example.com",
+     *      "role": "user"
+     *  }
+     * ],
+     *
+     *
+     * - Access Level : Manager , Admin
+     */
+    #[ResponseFromApiResource(TaskResource::class, Task::class, collection: false, )]
+    public function update(UpdateTaskRequest $request, $id)
+    {
+        $task = Task::findOrFail($id);
+        $data = $request->validated();
+
+        unset($data['status']);
+
+        $task->update($data);
+
+        if (isset($data['assignees_ids'])) {
+            $task->assignees()->sync($data['assignees_ids']);
+        }
 
         return new TaskResource($task);
     }

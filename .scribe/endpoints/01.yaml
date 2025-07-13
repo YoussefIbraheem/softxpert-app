@@ -15,7 +15,7 @@ endpoints:
         - Creates a new task with assignees (users).
         - user cannot be entered twice.
         - Default status (Pending)
-        - Access Level: Admin , Manager
+
         - Example of properties:
             - "depends_on_links": [
                   "id": 8,
@@ -29,6 +29,17 @@ endpoints:
                   "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
                   "link": "http://localhost:8000/api/tasks/8"
               ],
+
+            - "assignees": [
+         {
+             "id": 4,
+             "name": "Michael Murazik III",
+             "email": "harber.hazle@example.com",
+             "role": "user"
+         }
+        ],
+
+        - Access Level: Admin , Manager
       authenticated: true
       custom: []
     headers:
@@ -90,7 +101,126 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":104,"title":"Et animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":188,"assignees":[],"depends_on_links":[],"dependents_links":[],"due_date":"2025-07-21T10:10:44.000000Z","created_at":"2025-07-13T00:27:05.000000Z","updated_at":"2025-07-13T00:27:05.000000Z","is_owner":false}'
+        content: '{"id":123,"title":"Et animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"pending","owner_name":"Mr. Carey Smitham","owner_id":228,"assignees":[],"depends_on_links":[],"dependents_links":[],"due_date":"2025-07-28T20:17:01.000000Z","created_at":"2025-07-13T01:34:51.000000Z","updated_at":"2025-07-13T01:34:51.000000Z","is_owner":false}'
+        headers: []
+        description: ''
+        custom: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []
+  -
+    httpMethods:
+      - POST
+    uri: 'api/tasks/{id}/update'
+    metadata:
+      groupName: Tasks
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: 'Update Task Data'
+      description: |-
+        - update the task data (except for status and dependents located in separate endpoints)
+
+        - Example of properties:
+          -  "depends_on_links": [
+                  "id": 8,
+                  "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+                  "link": "http://localhost:8000/api/tasks/8"
+              ],
+
+
+           - "dependents_links": [
+                  "id": 8,
+                  "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+                  "link": "http://localhost:8000/api/tasks/8"
+              ],
+           - "assignees": [
+         {
+             "id": 4,
+             "name": "Michael Murazik III",
+             "email": "harber.hazle@example.com",
+             "role": "user"
+         }
+        ],
+
+
+        - Access Level : Manager , Admin
+      authenticated: true
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters:
+      id:
+        name: id
+        description: 'The ID of the task.'
+        required: true
+        example: 1
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanUrlParameters:
+      id: 1
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      title:
+        name: title
+        description: 'Must not be greater than 200 characters.'
+        required: false
+        example: b
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      description:
+        name: description
+        description: 'Must not be greater than 500 characters.'
+        required: false
+        example: 'Et animi quos velit et fugiat.'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      due_date:
+        name: due_date
+        description: 'Must be a valid date. Must be a valid date in the format <code>Y-m-d H:i:s</code>. Must be a date after or equal to <code>today</code>.'
+        required: false
+        example: '2051-08-06'
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: true
+        custom: []
+      assignees_ids:
+        name: assignees_ids
+        description: 'This field is required unless <code>assignees_ids</code> is in <code>null</code>. The <code>id</code> of an existing record in the users table.'
+        required: false
+        example:
+          - 16
+        type: 'integer[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      title: b
+      description: 'Et animi quos velit et fugiat.'
+      due_date: '2051-08-06'
+      assignees_ids:
+        - 16
+    fileParameters: []
+    responses:
+      -
+        status: 200
+        content: '{"id":124,"title":"Et animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"pending","owner_name":"Mr. Carey Smitham","owner_id":229,"assignees":[],"depends_on_links":[],"dependents_links":[],"due_date":"2025-07-28T20:17:01.000000Z","created_at":"2025-07-13T01:34:51.000000Z","updated_at":"2025-07-13T01:34:51.000000Z","is_owner":false}'
         headers: []
         description: ''
         custom: []
@@ -134,7 +264,16 @@ endpoints:
                   "link": "http://localhost:8000/api/tasks/8"
               ],
 
-        Access Level: user (own tasks), manager, admin (all)
+            - "assignees": [
+         {
+             "id": 4,
+             "name": "Michael Murazik III",
+             "email": "harber.hazle@example.com",
+             "role": "user"
+         }
+        ],
+
+        - Access Level: user (own tasks), manager, admin (all)
       authenticated: true
       custom: []
     headers:
@@ -231,7 +370,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '[{"id":105,"title":"Animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":189,"assignees":[],"depends_on_links":[],"dependents_links":[],"due_date":"2025-07-21T10:10:44.000000Z","created_at":"2025-07-13T00:27:05.000000Z","updated_at":"2025-07-13T00:27:05.000000Z","is_owner":false},{"id":106,"title":"Praesentium quis adipisci molestias fugit.","description":"Eum doloremque id aut libero aliquam veniam corporis. Mollitia deleniti nemo odit quia officia. Dignissimos neque blanditiis odio. Excepturi doloribus delectus fugit qui repudiandae laboriosam. Alias tenetur ratione nemo voluptate accusamus ut et.","status":"in_progress","owner_name":"Graham Crist V","owner_id":190,"assignees":[],"depends_on_links":[],"dependents_links":[],"due_date":"2025-07-21T23:57:27.000000Z","created_at":"2025-07-13T00:27:05.000000Z","updated_at":"2025-07-13T00:27:05.000000Z","is_owner":false}]'
+        content: '[{"id":125,"title":"Animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"pending","owner_name":"Mr. Carey Smitham","owner_id":230,"assignees":[],"depends_on_links":[],"dependents_links":[],"due_date":"2025-07-28T20:17:01.000000Z","created_at":"2025-07-13T01:34:51.000000Z","updated_at":"2025-07-13T01:34:51.000000Z","is_owner":false},{"id":126,"title":"Fugit deleniti distinctio eum doloremque id aut libero.","description":"Corporis dolorem mollitia deleniti nemo odit quia officia. Dignissimos neque blanditiis odio.","status":"pending","owner_name":"Emanuel Emmerich","owner_id":231,"assignees":[],"depends_on_links":[],"dependents_links":[],"due_date":"2025-08-12T23:51:12.000000Z","created_at":"2025-07-13T01:34:51.000000Z","updated_at":"2025-07-13T01:34:51.000000Z","is_owner":false}]'
         headers: []
         description: ''
         custom: []
@@ -252,9 +391,8 @@ endpoints:
       subgroupDescription: ''
       title: 'Get Task'
       description: |-
-        Get a single task details using the task id
+        - Get a single task details using the task id
 
-        Access Level: Admin , Manager , User(if assigned)
         - Example of properties:
             - "depends_on_links": [
                   "id": 8,
@@ -268,6 +406,16 @@ endpoints:
                   "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
                   "link": "http://localhost:8000/api/tasks/8"
               ],
+            - "assignees": [
+         {
+             "id": 4,
+             "name": "Michael Murazik III",
+             "email": "harber.hazle@example.com",
+             "role": "user"
+         }
+        ],
+
+        - Access Level: Admin , Manager , User(if assigned)
       authenticated: true
       custom: []
     headers:
@@ -294,7 +442,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":107,"title":"Et animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"in_progress","owner_name":"Carey Smitham","owner_id":191,"assignees":[],"depends_on_links":[],"dependents_links":[],"due_date":"2025-07-21T10:10:44.000000Z","created_at":"2025-07-13T00:27:05.000000Z","updated_at":"2025-07-13T00:27:05.000000Z","is_owner":false}'
+        content: '{"id":127,"title":"Et animi quos velit et fugiat.","description":"Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.","status":"pending","owner_name":"Mr. Carey Smitham","owner_id":232,"assignees":[],"depends_on_links":[],"dependents_links":[],"due_date":"2025-07-28T20:17:01.000000Z","created_at":"2025-07-13T01:34:51.000000Z","updated_at":"2025-07-13T01:34:51.000000Z","is_owner":false}'
         headers: []
         description: ''
         custom: []
@@ -315,8 +463,7 @@ endpoints:
       subgroupDescription: ''
       title: 'Change Task Status'
       description: |-
-        update the task status to --> (Pending , In Progress , Completed , Cancelled)
-        setting the task to cancelled is only limited to manager access level
+        - update the task status to --> (Pending , In Progress , Completed , Cancelled)
 
         - Example of properties:
           -  "depends_on_links": [
@@ -331,6 +478,17 @@ endpoints:
                   "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
                   "link": "http://localhost:8000/api/tasks/8"
               ],
+           - "assignees": [
+         {
+             "id": 4,
+             "name": "Michael Murazik III",
+             "email": "harber.hazle@example.com",
+             "role": "user"
+         }
+        ],
+
+        - Access Level: N/A
+        - **NOTE** setting the task to cancelled is only limited to manager access level
       authenticated: true
       custom: []
     headers:
@@ -372,7 +530,7 @@ endpoints:
     responses:
       -
         status: 200
-        content: '{"id":108,"title":"Fugit deleniti distinctio eum doloremque id aut libero.","description":"Corporis dolorem mollitia deleniti nemo odit quia officia. Dignissimos neque blanditiis odio.","status":"in_progress","owner_name":"Eileen Schmidt","owner_id":192,"assignees":[],"depends_on_links":[],"dependents_links":[],"due_date":"2025-08-06T07:07:53.000000Z","created_at":"2025-07-13T00:27:05.000000Z","updated_at":"2025-07-13T00:27:05.000000Z","is_owner":false}'
+        content: '{"id":128,"title":"Doloremque id aut libero aliquam veniam corporis.","description":"Deleniti nemo odit quia officia. Dignissimos neque blanditiis odio. Excepturi doloribus delectus fugit qui repudiandae laboriosam.","status":"pending","owner_name":"Jacques Howe","owner_id":233,"assignees":[],"depends_on_links":[],"dependents_links":[],"due_date":"2025-08-11T02:36:24.000000Z","created_at":"2025-07-13T01:34:51.000000Z","updated_at":"2025-07-13T01:34:51.000000Z","is_owner":false}'
         headers: []
         description: ''
         custom: []

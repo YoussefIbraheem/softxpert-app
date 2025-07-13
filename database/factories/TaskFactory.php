@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\TaskStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -21,7 +22,7 @@ class TaskFactory extends Factory
         return [
             'title' => $this->faker->sentence,
             'description' => $this->faker->paragraph,
-            'status' => $this->faker->randomElement($statuses),
+            'status' => TaskStatus::PENDING,
             'owner_id' => \App\Models\User::factory(), // Assuming you have a UserFactory
             'due_date' => $this->faker->dateTimeBetween('now', '+1 month'),
         ];

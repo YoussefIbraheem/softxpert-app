@@ -132,7 +132,7 @@ test('admin cannot enter non-existant user', function () {
         'assignees_ids' => [$randomId],
     ]);
 
-    $response->assertStatus(404);
+    $response->assertStatus(422);
 
     $this->assertDatabaseCount('task_user', 0);
 });
