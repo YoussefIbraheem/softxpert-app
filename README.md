@@ -84,7 +84,7 @@ tests/
 ### 📦 Clone & Install Dependencies
 
 ```bash
-git clone https://github.com/yourname/softxpert-app.git
+https://github.com/YoussefIbraheem/softxpert-app.git
 cd softxpert-app
 composer install
 ```
