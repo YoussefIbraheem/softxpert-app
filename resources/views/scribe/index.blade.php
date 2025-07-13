@@ -77,6 +77,9 @@
                                                                                 <li class="tocify-item level-2" data-unique="tasks-POSTapi-tasks--id--update">
                                 <a href="#tasks-POSTapi-tasks--id--update">Update Task Data</a>
                             </li>
+                                                                                <li class="tocify-item level-2" data-unique="tasks-POSTapi-tasks--id--add-dependents">
+                                <a href="#tasks-POSTapi-tasks--id--add-dependents">Add dependents</a>
+                            </li>
                                                                                 <li class="tocify-item level-2" data-unique="tasks-GETapi-tasks">
                                 <a href="#tasks-GETapi-tasks">Get Tasks</a>
                             </li>
@@ -266,18 +269,18 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 123,
+    &quot;id&quot;: 129,
     &quot;title&quot;: &quot;Et animi quos velit et fugiat.&quot;,
     &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
     &quot;status&quot;: &quot;pending&quot;,
     &quot;owner_name&quot;: &quot;Mr. Carey Smitham&quot;,
-    &quot;owner_id&quot;: 228,
+    &quot;owner_id&quot;: 242,
     &quot;assignees&quot;: [],
     &quot;depends_on_links&quot;: [],
     &quot;dependents_links&quot;: [],
-    &quot;due_date&quot;: &quot;2025-07-28T20:17:01.000000Z&quot;,
-    &quot;created_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
-    &quot;updated_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
+    &quot;due_date&quot;: &quot;2025-07-28T21:13:23.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
     &quot;is_owner&quot;: false
 }</code>
  </pre>
@@ -498,18 +501,18 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 124,
+    &quot;id&quot;: 130,
     &quot;title&quot;: &quot;Et animi quos velit et fugiat.&quot;,
     &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
     &quot;status&quot;: &quot;pending&quot;,
     &quot;owner_name&quot;: &quot;Mr. Carey Smitham&quot;,
-    &quot;owner_id&quot;: 229,
+    &quot;owner_id&quot;: 243,
     &quot;assignees&quot;: [],
     &quot;depends_on_links&quot;: [],
     &quot;dependents_links&quot;: [],
-    &quot;due_date&quot;: &quot;2025-07-28T20:17:01.000000Z&quot;,
-    &quot;created_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
-    &quot;updated_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
+    &quot;due_date&quot;: &quot;2025-07-28T21:13:23.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
     &quot;is_owner&quot;: false
 }</code>
  </pre>
@@ -644,6 +647,211 @@ You can check the Dev Tools console for debugging information.</code></pre>
         </div>
         </form>
 
+                    <h2 id="tasks-POSTapi-tasks--id--add-dependents">Add dependents</h2>
+
+<p>
+<small class="badge badge-darkred">requires authentication</small>
+</p>
+
+<ul>
+<li>
+<p>assign task to the parent task to make them dependent on it</p>
+</li>
+<li>
+<p>Example of properties:</p>
+<ul>
+<li>
+<p>&quot;depends_on_links&quot;: [
+&quot;id&quot;: 8,
+&quot;title&quot;: &quot;Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.&quot;,
+&quot;link&quot;: &quot;<a href="http://localhost:8000/api/tasks/8">http://localhost:8000/api/tasks/8</a>&quot;
+],</p>
+</li>
+<li>
+<p>&quot;dependents_links&quot;: [
+&quot;id&quot;: 8,
+&quot;title&quot;: &quot;Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.&quot;,
+&quot;link&quot;: &quot;<a href="http://localhost:8000/api/tasks/8">http://localhost:8000/api/tasks/8</a>&quot;
+],</p>
+</li>
+<li>
+<p>&quot;assignees&quot;: [
+{
+&quot;id&quot;: 4,
+&quot;name&quot;: &quot;Michael Murazik III&quot;,
+&quot;email&quot;: &quot;harber.hazle@example.com&quot;,
+&quot;role&quot;: &quot;user&quot;
+}
+],</p>
+</li>
+</ul>
+</li>
+<li>
+<p>Access Level : Manager , Admin</p>
+</li>
+</ul>
+
+<span id="example-requests-POSTapi-tasks--id--add-dependents">
+<blockquote>Example request:</blockquote>
+
+
+<div class="bash-example">
+    <pre><code class="language-bash">curl --request POST \
+    "http://localhost:8000/api/tasks/1/add-dependents" \
+    --header "Content-Type: application/json" \
+    --header "Accept: application/json" \
+    --data "{
+    \"dependent_tasks_ids\": [
+        16
+    ]
+}"
+</code></pre></div>
+
+
+<div class="javascript-example">
+    <pre><code class="language-javascript">const url = new URL(
+    "http://localhost:8000/api/tasks/1/add-dependents"
+);
+
+const headers = {
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+
+let body = {
+    "dependent_tasks_ids": [
+        16
+    ]
+};
+
+fetch(url, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+}).then(response =&gt; response.json());</code></pre></div>
+
+</span>
+
+<span id="example-responses-POSTapi-tasks--id--add-dependents">
+            <blockquote>
+            <p>Example response (200):</p>
+        </blockquote>
+                <pre>
+
+<code class="language-json" style="max-height: 300px;">{
+    &quot;id&quot;: 131,
+    &quot;title&quot;: &quot;Et animi quos velit et fugiat.&quot;,
+    &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
+    &quot;status&quot;: &quot;pending&quot;,
+    &quot;owner_name&quot;: &quot;Mr. Carey Smitham&quot;,
+    &quot;owner_id&quot;: 244,
+    &quot;assignees&quot;: [],
+    &quot;depends_on_links&quot;: [],
+    &quot;dependents_links&quot;: [],
+    &quot;due_date&quot;: &quot;2025-07-28T21:13:23.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
+    &quot;is_owner&quot;: false
+}</code>
+ </pre>
+    </span>
+<span id="execution-results-POSTapi-tasks--id--add-dependents" hidden>
+    <blockquote>Received response<span
+                id="execution-response-status-POSTapi-tasks--id--add-dependents"></span>:
+    </blockquote>
+    <pre class="json"><code id="execution-response-content-POSTapi-tasks--id--add-dependents"
+      data-empty-response-text="<Empty response>" style="max-height: 400px;"></code></pre>
+</span>
+<span id="execution-error-POSTapi-tasks--id--add-dependents" hidden>
+    <blockquote>Request failed with error:</blockquote>
+    <pre><code id="execution-error-message-POSTapi-tasks--id--add-dependents">
+
+Tip: Check that you&#039;re properly connected to the network.
+If you&#039;re a maintainer of ths API, verify that your API is running and you&#039;ve enabled CORS.
+You can check the Dev Tools console for debugging information.</code></pre>
+</span>
+<form id="form-POSTapi-tasks--id--add-dependents" data-method="POST"
+      data-path="api/tasks/{id}/add-dependents"
+      data-authed="1"
+      data-hasfiles="0"
+      data-isarraybody="0"
+      autocomplete="off"
+      onsubmit="event.preventDefault(); executeTryOut('POSTapi-tasks--id--add-dependents', this);">
+    <h3>
+        Request&nbsp;&nbsp;&nbsp;
+                    <button type="button"
+                    style="background-color: #8fbcd4; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-tryout-POSTapi-tasks--id--add-dependents"
+                    onclick="tryItOut('POSTapi-tasks--id--add-dependents');">Try it out ⚡
+            </button>
+            <button type="button"
+                    style="background-color: #c97a7e; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-canceltryout-POSTapi-tasks--id--add-dependents"
+                    onclick="cancelTryOut('POSTapi-tasks--id--add-dependents');" hidden>Cancel 🛑
+            </button>&nbsp;&nbsp;
+            <button type="submit"
+                    style="background-color: #6ac174; padding: 5px 10px; border-radius: 5px; border-width: thin;"
+                    id="btn-executetryout-POSTapi-tasks--id--add-dependents"
+                    data-initial-text="Send Request 💥"
+                    data-loading-text="⏱ Sending..."
+                    hidden>Send Request 💥
+            </button>
+            </h3>
+            <p>
+            <small class="badge badge-black">POST</small>
+            <b><code>api/tasks/{id}/add-dependents</code></b>
+        </p>
+                <h4 class="fancy-heading-panel"><b>Headers</b></h4>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Content-Type</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Content-Type"                data-endpoint="POSTapi-tasks--id--add-dependents"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                                <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>Accept</code></b>&nbsp;&nbsp;
+&nbsp;
+ &nbsp;
+                <input type="text" style="display: none"
+                              name="Accept"                data-endpoint="POSTapi-tasks--id--add-dependents"
+               value="application/json"
+               data-component="header">
+    <br>
+<p>Example: <code>application/json</code></p>
+            </div>
+                        <h4 class="fancy-heading-panel"><b>URL Parameters</b></h4>
+                    <div style="padding-left: 28px; clear: unset;">
+                <b style="line-height: 2;"><code>id</code></b>&nbsp;&nbsp;
+<small>integer</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="id"                data-endpoint="POSTapi-tasks--id--add-dependents"
+               value="1"
+               data-component="url">
+    <br>
+<p>The ID of the task. Example: <code>1</code></p>
+            </div>
+                            <h4 class="fancy-heading-panel"><b>Body Parameters</b></h4>
+        <div style=" padding-left: 28px;  clear: unset;">
+            <b style="line-height: 2;"><code>dependent_tasks_ids</code></b>&nbsp;&nbsp;
+<small>integer[]</small>&nbsp;
+ &nbsp;
+                <input type="number" style="display: none"
+               step="any"               name="dependent_tasks_ids[0]"                data-endpoint="POSTapi-tasks--id--add-dependents"
+               data-component="body">
+        <input type="number" style="display: none"
+               name="dependent_tasks_ids[1]"                data-endpoint="POSTapi-tasks--id--add-dependents"
+               data-component="body">
+    <br>
+<p>The <code>id</code> of an existing record in the tasks table.</p>
+        </div>
+        </form>
+
                     <h2 id="tasks-GETapi-tasks">Get Tasks</h2>
 
 <p>
@@ -712,7 +920,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"status\": \"in_progress\",
+    \"status\": \"cancelled\",
     \"title\": \"b\",
     \"owner_id\": 16,
     \"assignee_id\": 16,
@@ -734,7 +942,7 @@ const headers = {
 };
 
 let body = {
-    "status": "in_progress",
+    "status": "cancelled",
     "title": "b",
     "owner_id": 16,
     "assignee_id": 16,
@@ -759,33 +967,33 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;id&quot;: 125,
+        &quot;id&quot;: 132,
         &quot;title&quot;: &quot;Animi quos velit et fugiat.&quot;,
         &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
         &quot;status&quot;: &quot;pending&quot;,
         &quot;owner_name&quot;: &quot;Mr. Carey Smitham&quot;,
-        &quot;owner_id&quot;: 230,
+        &quot;owner_id&quot;: 245,
         &quot;assignees&quot;: [],
         &quot;depends_on_links&quot;: [],
         &quot;dependents_links&quot;: [],
-        &quot;due_date&quot;: &quot;2025-07-28T20:17:01.000000Z&quot;,
-        &quot;created_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
+        &quot;due_date&quot;: &quot;2025-07-28T21:13:23.000000Z&quot;,
+        &quot;created_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
         &quot;is_owner&quot;: false
     },
     {
-        &quot;id&quot;: 126,
-        &quot;title&quot;: &quot;Fugit deleniti distinctio eum doloremque id aut libero.&quot;,
-        &quot;description&quot;: &quot;Corporis dolorem mollitia deleniti nemo odit quia officia. Dignissimos neque blanditiis odio.&quot;,
+        &quot;id&quot;: 133,
+        &quot;title&quot;: &quot;Doloremque id aut libero aliquam veniam corporis.&quot;,
+        &quot;description&quot;: &quot;Deleniti nemo odit quia officia. Dignissimos neque blanditiis odio. Excepturi doloribus delectus fugit qui repudiandae laboriosam.&quot;,
         &quot;status&quot;: &quot;pending&quot;,
-        &quot;owner_name&quot;: &quot;Emanuel Emmerich&quot;,
-        &quot;owner_id&quot;: 231,
+        &quot;owner_name&quot;: &quot;Jacques Howe&quot;,
+        &quot;owner_id&quot;: 246,
         &quot;assignees&quot;: [],
         &quot;depends_on_links&quot;: [],
         &quot;dependents_links&quot;: [],
-        &quot;due_date&quot;: &quot;2025-08-12T23:51:12.000000Z&quot;,
-        &quot;created_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
-        &quot;updated_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
+        &quot;due_date&quot;: &quot;2025-08-11T03:32:46.000000Z&quot;,
+        &quot;created_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
+        &quot;updated_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
         &quot;is_owner&quot;: false
     }
 ]</code>
@@ -867,10 +1075,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
 <i>optional</i> &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="GETapi-tasks"
-               value="in_progress"
+               value="cancelled"
                data-component="body">
     <br>
-<p>Example: <code>in_progress</code></p>
+<p>Example: <code>cancelled</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>in_progress</code></li> <li><code>completed</code></li> <li><code>cancelled</code></li></ul>
         </div>
@@ -1021,18 +1229,18 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 127,
+    &quot;id&quot;: 134,
     &quot;title&quot;: &quot;Et animi quos velit et fugiat.&quot;,
     &quot;description&quot;: &quot;Accusantium harum mollitia modi deserunt aut ab. Perspiciatis quo omnis nostrum aut adipisci quidem nostrum qui. Incidunt iure odit et et modi ipsum.&quot;,
     &quot;status&quot;: &quot;pending&quot;,
     &quot;owner_name&quot;: &quot;Mr. Carey Smitham&quot;,
-    &quot;owner_id&quot;: 232,
+    &quot;owner_id&quot;: 247,
     &quot;assignees&quot;: [],
     &quot;depends_on_links&quot;: [],
     &quot;dependents_links&quot;: [],
-    &quot;due_date&quot;: &quot;2025-07-28T20:17:01.000000Z&quot;,
-    &quot;created_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
-    &quot;updated_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
+    &quot;due_date&quot;: &quot;2025-07-28T21:13:23.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
     &quot;is_owner&quot;: false
 }</code>
  </pre>
@@ -1177,7 +1385,7 @@ You can check the Dev Tools console for debugging information.</code></pre>
     --header "Content-Type: application/json" \
     --header "Accept: application/json" \
     --data "{
-    \"status\": \"cancelled\"
+    \"status\": \"pending\"
 }"
 </code></pre></div>
 
@@ -1193,7 +1401,7 @@ const headers = {
 };
 
 let body = {
-    "status": "cancelled"
+    "status": "pending"
 };
 
 fetch(url, {
@@ -1211,18 +1419,18 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 128,
-    &quot;title&quot;: &quot;Doloremque id aut libero aliquam veniam corporis.&quot;,
-    &quot;description&quot;: &quot;Deleniti nemo odit quia officia. Dignissimos neque blanditiis odio. Excepturi doloribus delectus fugit qui repudiandae laboriosam.&quot;,
+    &quot;id&quot;: 135,
+    &quot;title&quot;: &quot;Veniam corporis dolorem mollitia.&quot;,
+    &quot;description&quot;: &quot;Odit quia officia est dignissimos neque blanditiis odio. Excepturi doloribus delectus fugit qui repudiandae laboriosam. Alias tenetur ratione nemo voluptate accusamus ut et.&quot;,
     &quot;status&quot;: &quot;pending&quot;,
-    &quot;owner_name&quot;: &quot;Jacques Howe&quot;,
-    &quot;owner_id&quot;: 233,
+    &quot;owner_name&quot;: &quot;Mr. Graham Crist&quot;,
+    &quot;owner_id&quot;: 248,
     &quot;assignees&quot;: [],
     &quot;depends_on_links&quot;: [],
     &quot;dependents_links&quot;: [],
-    &quot;due_date&quot;: &quot;2025-08-11T02:36:24.000000Z&quot;,
-    &quot;created_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
-    &quot;updated_at&quot;: &quot;2025-07-13T01:34:51.000000Z&quot;,
+    &quot;due_date&quot;: &quot;2025-07-17T07:32:13.000000Z&quot;,
+    &quot;created_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
+    &quot;updated_at&quot;: &quot;2025-07-13T02:31:13.000000Z&quot;,
     &quot;is_owner&quot;: false
 }</code>
  </pre>
@@ -1315,10 +1523,10 @@ You can check the Dev Tools console for debugging information.</code></pre>
  &nbsp;
                 <input type="text" style="display: none"
                               name="status"                data-endpoint="POSTapi-tasks--id--change-status"
-               value="cancelled"
+               value="pending"
                data-component="body">
     <br>
-<p>Example: <code>cancelled</code></p>
+<p>Example: <code>pending</code></p>
 Must be one of:
 <ul style="list-style-type: square;"><li><code>pending</code></li> <li><code>in_progress</code></li> <li><code>completed</code></li> <li><code>cancelled</code></li></ul>
         </div>
@@ -1386,7 +1594,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 220,
+    &quot;id&quot;: 234,
     &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
     &quot;email&quot;: &quot;gulgowski.asia@example.com&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -1564,7 +1772,7 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">{
     &quot;data&quot;: {
-        &quot;id&quot;: 221,
+        &quot;id&quot;: 235,
         &quot;name&quot;: &quot;Mrs. Justina Gaylord&quot;,
         &quot;email&quot;: &quot;lafayette.considine@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
@@ -1830,7 +2038,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 222,
+    &quot;id&quot;: 236,
     &quot;name&quot;: &quot;Mr. Adriel Romaguera&quot;,
     &quot;email&quot;: &quot;antonio24@example.net&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -1966,7 +2174,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 223,
+    &quot;id&quot;: 237,
     &quot;name&quot;: &quot;Mina Bauch&quot;,
     &quot;email&quot;: &quot;okeefe.isidro@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -2144,7 +2352,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 224,
+    &quot;id&quot;: 238,
     &quot;name&quot;: &quot;Ms. Elisabeth Okuneva&quot;,
     &quot;email&quot;: &quot;idickens@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;
@@ -2292,13 +2500,13 @@ fetch(url, {
 
 <code class="language-json" style="max-height: 300px;">[
     {
-        &quot;id&quot;: 225,
+        &quot;id&quot;: 239,
         &quot;name&quot;: &quot;Mya DuBuque&quot;,
         &quot;email&quot;: &quot;breitenberg.gilbert@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
     },
     {
-        &quot;id&quot;: 226,
+        &quot;id&quot;: 240,
         &quot;name&quot;: &quot;Morgan Hirthe&quot;,
         &quot;email&quot;: &quot;dare.emelie@example.com&quot;,
         &quot;role&quot;: &quot;user&quot;
@@ -2421,7 +2629,7 @@ fetch(url, {
                 <pre>
 
 <code class="language-json" style="max-height: 300px;">{
-    &quot;id&quot;: 227,
+    &quot;id&quot;: 241,
     &quot;name&quot;: &quot;Prof. Mina Bauch&quot;,
     &quot;email&quot;: &quot;ztromp@example.org&quot;,
     &quot;role&quot;: &quot;user&quot;

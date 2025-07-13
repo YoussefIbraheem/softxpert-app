@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\TaskStatus;
 use App\Enums\UserRole;
+use App\Http\Requests\AddTaskDependentsRequest;
 use App\Http\Requests\ChangeTaskStatusRequest;
 use App\Http\Requests\CreateTaskRequest;
 use App\Http\Requests\TaskFilterRequest;
@@ -195,20 +196,8 @@ class TaskController extends Controller
 
         if (isset($data['assignees_ids'])) {
 
-            foreach ($data['assignees_ids'] as $assignee_id) {
-                $assignee = User::find($assignee_id);
-
-                if (! $assignee) {
-                    abort(404, 'Assignee Id not found!');
-                }
-
-                $assignee_exists = $task->assignees()->where('user_id', $assignee_id)->exists();
-
-                if ($assignee_exists) { // skip duplicate entery
-                    continue;
-                }
-
-                $task->assignees()->attach($assignee);
+            if (isset($data['assignees_ids'])) {
+                $task->assignees()->syncWithoutDetaching($data['assignees_ids']);
             }
         }
 
@@ -299,7 +288,7 @@ class TaskController extends Controller
      * - Access Level : Manager , Admin
      */
     #[ResponseFromApiResource(TaskResource::class, Task::class, collection: false, )]
-    public function update(UpdateTaskRequest $request, $id)
+    public function update(UpdateTaskRequest $request, $id): TaskResource
     {
         $task = Task::findOrFail($id);
         $data = $request->validated();
@@ -311,6 +300,55 @@ class TaskController extends Controller
         if (isset($data['assignees_ids'])) {
             $task->assignees()->sync($data['assignees_ids']);
         }
+
+        return new TaskResource($task);
+    }
+
+    /**
+     * Add dependents
+     *
+     * - assign task to the parent task to make them dependent on it
+     *
+     * - Example of properties:
+     *   -  "depends_on_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
+     *
+     *
+     *    - "dependents_links": [
+     *           "id": 8,
+     *           "title": "Accusamus expedita nihil molestiae culpa blanditiis laboriosam laborum.",
+     *           "link": "http://localhost:8000/api/tasks/8"
+     *       ],
+     *    - "assignees": [
+     *  {
+     *      "id": 4,
+     *      "name": "Michael Murazik III",
+     *      "email": "harber.hazle@example.com",
+     *      "role": "user"
+     *  }
+     * ],
+     *
+     *
+     * - Access Level : Manager , Admin
+     */
+    #[ResponseFromApiResource(TaskResource::class, Task::class, collection: false, )]
+    public function addDependents(AddTaskDependentsRequest $request, $id)
+    {
+        $task = Task::findOrFail($id);
+        $data = $request->validated();
+
+        foreach ($data['dependent_tasks_ids'] as $dependentId) {
+            $dependent = Task::find($dependentId);
+
+            if ($dependent->id === $task->id) {
+                abort(422, 'You cannot make the task dependent on itself');
+            }
+        }
+
+        $task->dependents()->sync($data['dependent_tasks_ids']);
 
         return new TaskResource($task);
     }

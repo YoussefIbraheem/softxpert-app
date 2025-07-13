@@ -28,11 +28,16 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::get('/{id}', [UserController::class, 'getUser'])->name('users.getUser');
         });
 
-        Route::post('/tasks/create', [TaskController::class, 'store'])->name('tasks.create');
-        Route::post('/tasks/{id}/update', [TaskController::class, 'update'])->name('tasks.update');
+        Route::group(['prefix' => 'tasks'], function () {
+            Route::post('/create', [TaskController::class, 'store'])->name('tasks.create');
+            Route::post('/{id}/update', [TaskController::class, 'update'])->name('tasks.update');
+            Route::post('/{id}/add-dependents', [TaskController::class, 'addDependents'])->name('tasks.addDependents');
+        });
     });
 
-    Route::get('/tasks', [TaskController::class, 'index'])->name('tasks.getTasks');
-    Route::get('/tasks/{id}', [TaskController::class, 'show'])->name('tasks.getById');
-    Route::post('/tasks/{id}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.changeStatus');
+    Route::group(['prefix' => 'tasks'], function () {
+        Route::get('/', [TaskController::class, 'index'])->name('tasks.getTasks');
+        Route::get('/{id}', [TaskController::class, 'show'])->name('tasks.getById');
+        Route::post('/{id}/change-status', [TaskController::class, 'changeStatus'])->name('tasks.changeStatus');
+    });
 });

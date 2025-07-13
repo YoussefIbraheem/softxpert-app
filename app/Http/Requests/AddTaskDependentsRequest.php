@@ -4,16 +4,15 @@ namespace App\Http\Requests;
 
 use App\Enums\UserRole;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class ChangeUserTypeRequest extends FormRequest
+class AddTaskDependentsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(): bool
     {
-        return $this->user()->hasRole(UserRole::ADMIN);
+        return $this->user()->hasAnyRole([UserRole::ADMIN, UserRole::MANAGER]);
     }
 
     /**
@@ -24,12 +23,8 @@ class ChangeUserTypeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'role_name' => [
-                'required',
-                'string',
-                Rule::in(array_column([UserRole::MANAGER, UserRole::USER], 'value')),
-            ],
-            'user_id' => ['integer', 'exists:users,id'],
+            'dependent_tasks_ids' => ['required', 'array'],
+            'dependent_tasks_ids.*' => ['required', 'integer', 'exists:tasks,id'],
         ];
     }
 }
