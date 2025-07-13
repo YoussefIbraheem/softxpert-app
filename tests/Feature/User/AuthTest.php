@@ -19,7 +19,7 @@ test('user can register successfully', function () {
         ->assertJsonFragment([
             'name' => $data['name'],
             'email' => $data['email'],
-            'role' => 'user',
+            'role' => UserRole::USER->value,
         ]);
 
     $this->assertDatabaseHas('users', [
@@ -45,7 +45,7 @@ test('user can login and receive token', function () {
         ->assertJsonFragment([
             'name' => $user->name,
             'email' => $user->email,
-            'role' => 'user',
+            'role' => UserRole::USER->value,
         ])
         ->assertJsonStructure([
             'data' => ['id', 'name', 'email', 'role'],
@@ -64,7 +64,7 @@ test('user must follow password complexity rules', function () {
             'password_confirmation' => $pwd,
         ]);
 
-        $response->assertStatus(422);
+        $response->assertStatus(422)->assertJsonValidationErrors('password');
     }
 });
 
@@ -76,8 +76,40 @@ test('user cannot register with invalid email format', function () {
         'password_confirmation' => 'Password@123',
     ]);
 
-    $response->assertStatus(422)
-        ->assertJsonValidationErrors('email');
+    $response->assertStatus(422)->assertJsonValidationErrors('email');
+});
+
+test('user cannot register with mismatched passwords', function () {
+    $response = $this->postJson('/api/register', [
+        'name' => 'Mismatch User',
+        'email' => fake()->safeEmail(),
+        'password' => 'Password@123',
+        'password_confirmation' => 'Different@123',
+    ]);
+
+    $response->assertStatus(422)->assertJsonValidationErrors('password');
+});
+
+test('user cannot register with an already used email', function () {
+    $email = fake()->safeEmail();
+
+    // First registration
+    $this->postJson('/api/register', [
+        'name' => 'First User',
+        'email' => $email,
+        'password' => 'Password@123',
+        'password_confirmation' => 'Password@123',
+    ])->assertStatus(201);
+
+    // Second registration attempt
+    $response = $this->postJson('/api/register', [
+        'name' => 'Second User',
+        'email' => $email,
+        'password' => 'Password@123',
+        'password_confirmation' => 'Password@123',
+    ]);
+
+    $response->assertStatus(422)->assertJsonValidationErrors('email');
 });
 
 test('user cannot login with non-existent credentials', function () {
@@ -86,8 +118,7 @@ test('user cannot login with non-existent credentials', function () {
         'password' => 'Password@123',
     ]);
 
-    $response->assertStatus(422)
-        ->assertJsonValidationErrors('email');
+    $response->assertStatus(422)->assertJsonValidationErrors('email');
 });
 
 test('user cannot login with incorrect password', function () {
@@ -102,53 +133,17 @@ test('user cannot login with incorrect password', function () {
         'password' => 'WrongPassword@123',
     ]);
 
-    $response->assertStatus(422)
-        ->assertJsonValidationErrors('email');
-});
-
-test('user cannot register if password confirmation mismatches', function () {
-    $response = $this->postJson('/api/register', [
-        'name' => 'Mismatch User',
-        'email' => fake()->safeEmail(),
-        'password' => 'Password@123',
-        'password_confirmation' => 'Different@123',
-    ]);
-
-    $response->assertStatus(422)
-        ->assertJsonValidationErrors('password');
-});
-
-test('user cannot register with already used email', function () {
-    $email = fake()->safeEmail();
-
-    $this->postJson('/api/register', [
-        'name' => 'First User',
-        'email' => $email,
-        'password' => 'Password@123',
-        'password_confirmation' => 'Password@123',
-    ])->assertStatus(201);
-
-    $response = $this->postJson('/api/register', [
-        'name' => 'Second User',
-        'email' => $email,
-        'password' => 'Password@123',
-        'password_confirmation' => 'Password@123',
-    ]);
-
-    $response->assertStatus(422)
-        ->assertJsonValidationErrors('email');
+    $response->assertStatus(422)->assertJsonValidationErrors('email');
 });
 
 test('user cannot login without required fields', function () {
     $response = $this->postJson('/api/login', []);
-    $response->assertStatus(422)
-        ->assertJsonValidationErrors(['email', 'password']);
+    $response->assertStatus(422)->assertJsonValidationErrors(['email', 'password']);
 });
 
 test('user can logout successfully', function () {
-    $password = 'Password@123';
     $user = User::factory()->create([
-        'password' => bcrypt($password),
+        'password' => bcrypt('Password@123'),
     ]);
     $user->assignRole(UserRole::USER);
 
@@ -156,8 +151,7 @@ test('user can logout successfully', function () {
 
     $response = $this->postJson('/api/logout');
 
-    $response->assertStatus(200)
-        ->assertJson([
-            'message' => 'Logged out successfully!',
-        ]);
+    $response->assertStatus(200)->assertJson([
+        'message' => 'Logged out successfully!',
+    ]);
 });
