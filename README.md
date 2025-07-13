@@ -6,18 +6,32 @@ A robust RESTful backend API for task management built with **Laravel** and test
 
 ## 📄 Table of Contents
 
-- [📚 Features](#-features)
-- [📊 ER Diagram](#-er-diagram)
-- [📂 Folder Structure](#-folder-structure)
-- [🛠️ Technologies Used](#️-technologies-used)
-- [⚙️ Installation & Setup](#️-installation--setup)
-- [✅ Testing](#-testing)
-- [📮 Postman Documentation](#-postman-documentation)
-- [📘 API Documentation (Scribe)](#-api-documentation-scribe)
-- [🚦 API Summary](#-api-summary)
-- [👨‍👩‍👧‍👦 Roles & Permissions](#-roles--permissions)
-- [🧪 Test Coverage](#-test-coverage)
-- [📦 Packages Installed](#-packages-installed-excluding-laravels-preinstalled)
+- [🧩 SoftXpert Task Management API](#-softxpert-task-management-api)
+  - [📄 Table of Contents](#-table-of-contents)
+  - [📚 Features](#-features)
+  - [📊 ER Diagram](#-er-diagram)
+  - [📂 Folder Structure](#-folder-structure)
+  - [🛠️ Technologies Used](#️-technologies-used)
+  - [⚙️ Installation \& Setup](#️-installation--setup)
+    - [📦 Clone \& Install Dependencies](#-clone--install-dependencies)
+    - [🔑 Environment Configuration](#-environment-configuration)
+    - [🧪 Testing Environment](#-testing-environment)
+    - [🗃️ Migrate \& Seed Database](#️-migrate--seed-database)
+  - [✅ Testing](#-testing)
+  - [📮 Postman Documentation](#-postman-documentation)
+  - [📘 API Documentation (Scribe)](#-api-documentation-scribe)
+    - [📍 URL](#-url)
+    - [📁 Files](#-files)
+    - [🔁 Regenerate](#-regenerate)
+  - [🚦 API Summary](#-api-summary)
+  - [👨‍👩‍👧‍👦 Roles \& Permissions](#-roles--permissions)
+  - [🧪 Test Coverage](#-test-coverage)
+  - [📦 Packages Installed (excluding Laravel defaults)](#-packages-installed-excluding-laravel-defaults)
+    - [⚙️ Development](#️-development)
+    - [🔐 Auth \& Roles](#-auth--roles)
+    - [📄 Docs \& Utilities](#-docs--utilities)
+  - [🗺️ ERD (Entity Relationship Diagram)](#️-erd-entity-relationship-diagram)
+  - [🎯 Final Notes](#-final-notes)
 
 ---
 
@@ -84,7 +98,7 @@ tests/
 ### 📦 Clone & Install Dependencies
 
 ```bash
-https://github.com/YoussefIbraheem/softxpert-app.git
+git clone https://github.com/YoussefIbraheem/softxpert-app.git
 cd softxpert-app
 composer install
 ```
