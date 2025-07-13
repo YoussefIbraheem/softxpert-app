@@ -1,61 +1,285 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🧩 SoftXpert Task Management API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A robust RESTful backend API for task management built with **Laravel** and tested using **PestPHP**. It supports role-based access control (Admin, Manager, User), task dependencies, status control workflows, and dynamic permission logic.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## 📄 Table of Contents
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [📚 Features](#-features)
+- [📊 ER Diagram](#-er-diagram)
+- [📂 Folder Structure](#-folder-structure)
+- [🛠️ Technologies Used](#️-technologies-used)
+- [⚙️ Installation & Setup](#️-installation--setup)
+- [✅ Testing](#-testing)
+- [📮 Postman Documentation](#-postman-documentation)
+- [📘 API Documentation (Scribe)](#-api-documentation-scribe)
+- [🚦 API Summary](#-api-summary)
+- [👨‍👩‍👧‍👦 Roles & Permissions](#-roles--permissions)
+- [🧪 Test Coverage](#-test-coverage)
+- [📦 Packages Installed](#-packages-installed-excluding-laravels-preinstalled)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 📚 Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+* 🔐 Auth (Register, Login, Logout)
+* 👤 User profile management
+* 🔁 Role Switching (Admin ↔ Manager)
+* 📋 Task CRUD with:
+  * Assignees
+  * Status lifecycle
+  * Task dependencies (children)
+* 🔄 Change task status with validation on role and dependency
+* 👁️ Task visibility based on role & assignment
+* 🧩 Add task dependencies (children) via dedicated endpoint
+* 🧪 100% feature coverage in PestPHP
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## 📊 ER Diagram
 
-## Laravel Sponsors
+The system consists of users, tasks, and a pivot table for both task dependencies and assignees.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+📄 **File:** [`ERD.drawio`](ERD.drawio) — Open it with [draw.io](https://app.diagrams.net).
 
-### Premium Partners
+---
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+## 📂 Folder Structure
 
-## Contributing
+```
+app/
+├── Http/
+│   ├── Controllers/
+│   ├── Requests/
+│   └── Resources/
+├── Models/
+├── Policies/
+├── Enums/
+tests/
+├── Feature/
+│   ├── AuthTest.php
+│   ├── UserTest.php
+│   ├── ChangeTaskStatusTest.php
+│   └── ...
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+---
 
-## Code of Conduct
+## 🛠️ Technologies Used
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+* **Laravel 12.20.0**
+* **PHP 8.2+**
+* **Sanctum** for token-based auth
+* **Spatie Laravel-Permission** for RBAC
+* **PestPHP** for testing
+* **Scribe** for API documentation
+* **Postman** for API collection
+* **Draw.io** for ER Diagram
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## ⚙️ Installation & Setup
 
-## License
+### 📦 Clone & Install Dependencies
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+```bash
+git clone https://github.com/yourname/softxpert-app.git
+cd softxpert-app
+composer install
+```
+
+### 🔑 Environment Configuration
+
+```bash
+cp .env.example .env
+php artisan key:generate
+```
+
+> ✅ Update `.env` with your DB credentials.
+
+### 🧪 Testing Environment
+
+```bash
+cp .env.testing.example .env.testing
+```
+
+> Uses `sqlite` in-memory for fast, isolated test runs.
+
+---
+
+### 🗃️ Migrate & Seed Database
+
+```bash
+php artisan migrate --seed
+```
+
+To reset:
+
+```bash
+php artisan migrate:fresh --seed
+```
+
+---
+
+## ✅ Testing
+
+```bash
+php artisan test
+# or
+vendor/bin/pest
+```
+
+Run with coverage:
+
+```bash
+vendor/bin/pest --coverage
+```
+
+---
+
+## 📮 Postman Documentation
+
+🧪 Postman collection: [`SoftXpert.postman_collection.json`](SoftXpert.postman_collection.json)
+
+You can import it into Postman to quickly test all API endpoints.
+
+<details>
+<summary>Endpoints Overview</summary>
+
+**Auth**
+- POST `/register`
+- POST `/login`
+- POST `/logout`
+
+**User**
+- GET `/user`
+- POST `/user/update`
+- POST `/change-role`
+- GET `/users`
+- GET `/users/{id}`
+
+**Tasks**
+- GET `/tasks`
+- GET `/tasks/{id}`
+- POST `/tasks/create`
+- POST `/tasks/{id}/update`
+- POST `/tasks/{id}/change-status`
+- POST `/tasks/{id}/add-dependents`
+
+</details>
+
+---
+
+## 📘 API Documentation (Scribe)
+
+The full API documentation is generated using **Scribe** and is viewable in-browser.
+
+### 📍 URL
+
+```bash
+http://localhost:8000/docs
+```
+
+### 📁 Files
+
+- Documentation lives in: `public/docs/`
+- Configurable in: `config/scribe.php`
+
+### 🔁 Regenerate
+
+```bash
+php artisan scribe:generate
+```
+
+---
+
+## 🚦 API Summary
+
+| Action                    | Admin | Manager |       User      |
+| ------------------------- | :---: | :-----: | :-------------: |
+| Create task               |   ✅   |    ✅    |        ❌        |
+| Edit task (except status) |   ✅   |    ✅    |        ❌        |
+| Add dependents            |   ✅   |    ✅    |        ❌        |
+| Change status (normal)    |   ✅   |    ✅    | ✅ (if assigned) |
+| Cancel task               |   ✅   |    ✅    |        ❌        |
+| View assigned tasks       |   ✅   |    ✅    |        ✅        |
+| Delete task               |   ✅   |    ❌    |        ❌        |
+| View all tasks            |   ✅   |    ✅    |        ❌        |
+
+---
+
+## 👨‍👩‍👧‍👦 Roles & Permissions
+
+- **Admin**
+  - Full access including delete, cancel, and role changes.
+- **Manager**
+  - Full task control, no deletion or role change.
+- **User**
+  - Can only update status of their assigned tasks (not cancel).
+
+---
+
+## 🧪 Test Coverage
+
+Fully covered using PestPHP:
+
+* Auth & login/logout
+* Role checks
+* Task creation, update, filtering
+* Status rules
+* Dependency enforcement
+* User update
+* Policy enforcement
+
+---
+
+## 📦 Packages Installed (excluding Laravel defaults)
+
+### ⚙️ Development
+
+- `pestphp/pest`
+- `brianium/paratest`
+- `larastan/larastan`
+- `phpstan/phpstan`
+- `filp/whoops`
+
+### 🔐 Auth & Roles
+
+- `laravel/sanctum`
+- `spatie/laravel-permission`
+
+### 📄 Docs & Utilities
+
+- `knuckleswtf/scribe`
+- `fakerphp/faker`
+- `guzzlehttp/guzzle`
+- `fruitcake/php-cors`
+
+---
+
+## 🗺️ ERD (Entity Relationship Diagram)
+
+📁 File: [`ERD.drawio`](ERD.drawio) (view in draw.io)
+
+<details>
+<summary>Overview</summary>
+
+- **Users**
+  - One-to-many: tasks (created)
+  - Many-to-many: assigned tasks
+
+- **Tasks**
+  - Belongs to: owner (creator)
+  - Many-to-many: assignees (users)
+  - Self-referencing: depends_on, dependents
+
+</details>
+
+---
+
+## 🎯 Final Notes
+
+✅ Ready for deployment or CI/CD integration.  
+✅ API tested and documented.  
+✅ Fully modular and extendable.
