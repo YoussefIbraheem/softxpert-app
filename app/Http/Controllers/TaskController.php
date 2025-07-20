@@ -192,7 +192,7 @@ class TaskController extends Controller
 
         $data = $request->validated();
 
-        $task = $user->created_tasks()->create($data);
+        $task = $user->createdTasks()->create($data);
 
         if (isset($data['assignees_ids'])) {
 
@@ -243,10 +243,10 @@ class TaskController extends Controller
 
         $this->authorize('update', $task);
 
-        $is_user = $request->user()->hasRole(UserRole::USER);
-        $unclosed_dependents = $this->checkDependents($task);
+        $isUser = $request->user()->hasRole(UserRole::USER);
+        $unclosedDependents = $this->checkDependents($task);
 
-        if ($is_user && $unclosed_dependents) {
+        if ($isUser && $unclosedDependents) {
             abort(422, 'Action cannot be taken, please check for unclosed dependent tasks');
         }
 
