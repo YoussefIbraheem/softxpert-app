@@ -124,9 +124,9 @@ class UserController extends Controller
      */
     #[Authenticated]
     #[ResponseFromApiResource(UserResource::class, User::class),UrlParam(name: 'id', type: 'int', description: 'searched user\'s id', example: 1)]
-    public function getUser(int $id): UserResource
+    public function getUser(User $user): UserResource
     {
-        $data = User::findOrFail($id);
+        $data = $user;
 
         return new UserResource($data);
     }

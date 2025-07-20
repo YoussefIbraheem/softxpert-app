@@ -25,7 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         Route::group(['prefix' => 'users'], function () {
             Route::get('/', [UserController::class, 'getUsers'])->name('users.getUsers');
-            Route::get('/{id}', [UserController::class, 'getUser'])->name('users.getUser');
+            Route::get('/{user}', [UserController::class, 'getUser'])->name('users.getUser');
         });
 
         Route::group(['prefix' => 'tasks'], function () {
